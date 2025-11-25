@@ -47,7 +47,7 @@ public class LoginController {
     @FXML
     private void handleGotoRegister() throws IOException {
         Stage stage = (Stage) btnLogin.getScene().getWindow();
-        SceneManager.switchScene(stage, "/com/aplikasi/view/Registration.fxml");
+        SceneManager.switchScene(stage, "/com/aplikasi/view/Register.fxml");
     }
     
     // Utilitas untuk menampilkan alert
@@ -58,4 +58,5 @@ public class LoginController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }
