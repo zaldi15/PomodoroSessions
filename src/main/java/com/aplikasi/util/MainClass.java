@@ -1,7 +1,5 @@
 package com.aplikasi.util;
 
-import com.aplikasi.view.DashboardController;
-import com.aplikasi.model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +13,7 @@ public class MainClass extends Application {
     @Override
     public void start(Stage primaryStage) {
         mainStage = primaryStage;
-        openLoginPage();
+        openLoginPage(); // Pertama kali buka layar Login
     }
 
     public static Stage getMainStage() {
@@ -27,7 +25,7 @@ public class MainClass extends Application {
     // ======================
     public static void openLoginPage() {
         loadScene("/com/aplikasi/view/Login.fxml", "Login - Pomodoro");
-        GloballSession.clearSession();
+        // Tidak ada GlobalSession.clearSession();
     }
 
     // ======================
@@ -37,11 +35,30 @@ public class MainClass extends Application {
         loadScene("/com/aplikasi/view/Register.fxml", "Registrasi");
     }
 
+    // ======================
+    // LOADER GENERIC
+    // ======================
+    private static void loadScene(String fxmlPath, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainClass.class.getResource(fxmlPath));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+            mainStage.setScene(scene);
+            mainStage.setTitle(title);
+            mainStage.setResizable(false);
+            mainStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Gagal memuat tampilan: " + fxmlPath);
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);
-        // Pastikan koneksi ditutup saat aplikasi di-close
-        DBConnection.closeConnection(); 
-    }
 
+        // Tutup koneksi DB ketika aplikasi keluar
+        DBConnection.closeConnection();
+    }
 }
