@@ -2,61 +2,51 @@ package com.aplikasi.view;
 
 import com.aplikasi.controller.UserController;
 import com.aplikasi.model.User;
-import com.aplikasi.util.SceneManager; // Class utilitas untuk ganti scene (DIBUAT MANUAL)
+import com.aplikasi.util.MainClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-import java.io.IOException;
 
 public class LoginController {
-    
+
     @FXML private TextField txtUsername;
     @FXML private PasswordField txtPassword;
-    @FXML private Button btnLogin;
-    
+
     private final UserController userController = new UserController();
 
-    
     @FXML
     private void handleLogin() {
-        String username = txtUsername.getText();
-        String password = txtPassword.getText();
-        
-        // Panggil Controller (Lapisan Logic)
-        User loggedInUser = userController.login(username, password);
-        
-        if (loggedInUser != null) {
-            showAlert(Alert.AlertType.INFORMATION, "Sukses!", "Selamat datang, " + loggedInUser.getUsername());
-            
-            // TODO: Simpan user ID di Sesi Global sebelum pindah
-            // GlobalSession.setCurrentUser(loggedInUser);
 
-            // Ganti Scene ke Dashboard (Tugas Zaldi Arifa)
-            try {
-                Stage stage = (Stage) btnLogin.getScene().getWindow();
-                SceneManager.switchScene(stage, "/com/aplikasi/view/Dashboard.fxml");
-            } catch (IOException e) {
-                 showAlert(Alert.AlertType.ERROR, "Error", "Gagal memuat Dashboard.");
-            }
+        String username = txtUsername.getText().trim();
+        String password = txtPassword.getText().trim();
+
+        User loggedInUser = userController.login(username, password);
+
+        if (loggedInUser != null) {
+            // ⛔ Tidak pakai GlobalSession
+            // ⛔ Tidak masuk ke dashboard
+            
+            showAlert(Alert.AlertType.INFORMATION,
+                    "Login Berhasil",
+                    "Selamat datang, " + loggedInUser.getUsername() + "!");
+
         } else {
-            showAlert(Alert.AlertType.ERROR, "Login Gagal", "Username atau Password salah.");
+            showAlert(Alert.AlertType.ERROR,
+                    "Login Gagal",
+                    "Username atau password salah.");
         }
     }
 
-    // Metode untuk navigasi ke Registrasi
     @FXML
-    private void handleGotoRegister() throws IOException {
-        Stage stage = (Stage) btnLogin.getScene().getWindow();
-        SceneManager.switchScene(stage, "/com/aplikasi/view/Register.fxml");
+    private void handleGotoRegister() {
+        // Tetap ke halaman Register
+        MainClass.openRegisterPage();
     }
-    
-    // Utilitas untuk menampilkan alert
-    private void showAlert(Alert.AlertType type, String title, String content) {
+
+    private void showAlert(Alert.AlertType type, String title, String msg) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(content);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
-
 }
