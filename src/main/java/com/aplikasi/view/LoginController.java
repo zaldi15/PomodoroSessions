@@ -10,35 +10,26 @@ public class LoginController {
 
     @FXML private TextField txtUsername;
     @FXML private PasswordField txtPassword;
+    @FXML private Button btnLogin;
 
     private final UserController userController = new UserController();
 
     @FXML
     private void handleLogin() {
-
         String username = txtUsername.getText().trim();
         String password = txtPassword.getText().trim();
 
         User loggedInUser = userController.login(username, password);
 
         if (loggedInUser != null) {
-            // ⛔ Tidak pakai GlobalSession
-            // ⛔ Tidak masuk ke dashboard
-            
-            showAlert(Alert.AlertType.INFORMATION,
-                    "Login Berhasil",
-                    "Selamat datang, " + loggedInUser.getUsername() + "!");
-
+            MainClass.openDashboard(loggedInUser);
         } else {
-            showAlert(Alert.AlertType.ERROR,
-                    "Login Gagal",
-                    "Username atau password salah.");
+            showAlert(Alert.AlertType.ERROR, "Login Gagal", "Username atau password salah.");
         }
     }
 
     @FXML
     private void handleGotoRegister() {
-        // Tetap ke halaman Register
         MainClass.openRegisterPage();
     }
 
