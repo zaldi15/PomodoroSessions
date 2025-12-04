@@ -35,6 +35,18 @@ public class MainClass extends Application {
         loadScene("/com/aplikasi/view/Register.fxml", "Registrasi");
     }
 
+    public static void openManageTaskPage(){
+        loadScene("/com/aplikasi/view/ManageTask.fxml", "Manage Task");
+    }
+    
+    public static void openAddTaskPage(){
+        loadScene("/com/aplikasi/view/AddTask.fxml", "Add Task");
+    }
+    
+    public static void openEditTaskPage(){
+        loadScene("/com/aplikasi/view/EditTask.fxml", "Edit Task");
+    }
+
     // ======================
     // LOADER GENERIC
     // ======================
@@ -62,3 +74,4 @@ public class MainClass extends Application {
         DBConnection.closeConnection();
     }
 }
+
