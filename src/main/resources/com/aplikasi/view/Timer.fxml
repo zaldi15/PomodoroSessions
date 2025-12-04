@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.aplikasi.view.TimerController"
+            prefWidth="800" prefHeight="400" stylesheets="@timer.css">
+
+    <!-- Navigasi kiri -->
+    <left>
+        <VBox spacing="20" prefWidth="150" alignment="TOP_LEFT" styleClass="nav-pane">
+            <Label text="Navigation" styleClass="nav-title"/>
+            <Button text="Timer" styleClass="nav-button-selected"/>
+            <Button text="Task Management" styleClass="nav-button"/>
+            <Button text="Report" styleClass="nav-button"/>
+        </VBox>
+    </left>
+
+    <!-- Timer tengah -->
+    <center>
+        <VBox spacing="20" alignment="CENTER">
+            <Label fx:id="labelTimer" text="25:00" styleClass="timer-label"/>
+            <HBox spacing="10" alignment="CENTER">
+                <Button fx:id="btnStart" text="Start" onAction="#handleStart" styleClass="btn-blue"/>
+                <Button fx:id="btnPause" text="Pause" onAction="#handlePause" styleClass="btn-blue"/>
+                <Button fx:id="btnReset" text="Reset" onAction="#handleReset" styleClass="btn-gray"/>
+            </HBox>
+            <Label fx:id="labelTask" text="Working On:&#10;Tugas Promlan" styleClass="task-label"/>
+        </VBox>
+    </center>
+
+    <!-- Pending task kanan -->
+    <right>
+        <VBox spacing="10" alignment="TOP_LEFT" prefWidth="200">
+            <Label text="Pending" styleClass="pending-title"/>
+            <ListView fx:id="taskListView" prefHeight="250"/>
+        </VBox>
+    </right>
+
+</BorderPane>
