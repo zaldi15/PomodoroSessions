@@ -56,8 +56,27 @@ public class ManageTaskController implements Initializable {
         colDeadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colCompleted.setCellValueFactory(cellData -> cellData.getValue().completedProperty());
-        colCompleted.setCellFactory(tc -> new CheckBoxTableCell<>());
-        
+        colCompleted.setCellFactory(column -> {
+            return new CheckBoxTableCell<>(index -> {
+                Tasks task = tvTasks.getItems().get(index);
+                    task.completedProperty().addListener((obs, oldVal, newVal) -> {
+        try {
+            task.setCompleted(newVal);
+            TasksDAO.updateEntry(task);
+
+            // Optional: tracking
+            if (newVal) {
+                TrackingDAO.updateSession(currentUser.getId(), 0, 0);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    });
+                return task.completedProperty();
+            });
+        });
+
         // Setup tombol Edit & Delete
         setupEditDeleteColumn();
         
