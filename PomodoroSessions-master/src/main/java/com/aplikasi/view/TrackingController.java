@@ -1,6 +1,6 @@
 package com.aplikasi.view;
 
-import com.aplikasi.dao.TrackingProductivityDAO;
+import com.aplikasi.dao.TrackingDAO;
 import com.aplikasi.model.TrackingProductivity;
 import com.aplikasi.util.SceneManager;
 import javafx.event.ActionEvent;
