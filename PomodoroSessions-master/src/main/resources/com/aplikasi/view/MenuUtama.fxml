@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.MenuController">
+
+    <children>
+        <SplitPane dividerPositions="0.23" prefHeight="400.0" prefWidth="600.0">
+            <items>
+
+                <!-- ===========================
+                     Sidebar Navigation (Left)
+                ============================ -->
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0">
+                    <children>
+                        <VBox prefHeight="400.0" prefWidth="140.0">
+                            <children>
+                                <Label alignment="CENTER" prefHeight="100.0" prefWidth="140.0" text="NAVIGATION" />
+
+                                <Button fx:id="btnTimer" onAction="#handleTimer" prefHeight="50.0" prefWidth="140.0" text="Pomodoro Timer" />
+
+                                <Button fx:id="btnManageTask" onAction="#handleManageTask" prefHeight="50.0" prefWidth="140.0" text="Task Management" />
+                                
+                                <Button fx:id="btnReport" onAction="#handleReport" prefHeight="50.0" prefWidth="140.0" text="Report" />
+                                
+                                <Button fx:id="btnLogout" onAction="#handleLogout" prefHeight="50.0" prefWidth="140.0" text="Logout" />
+
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+
+                <!-- ===========================
+                     Main Content (Right)
+                     — Optional placeholder UI
+                ============================ -->
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="460.0">
+                    <children>
+                        <Label layoutX="86.0" layoutY="199.0" style="-fx-font-size: 18px;" text="please select a menu on the left" />
+                  <Label layoutX="150.0" layoutY="162.0" prefHeight="17.0" prefWidth="123.0" text="Welcome to Pomodo+" />
+                    </children>
+                </AnchorPane>
+
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>
