@@ -2,240 +2,192 @@ package com.aplikasi.view;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 import javafx.collections.FXCollections;
-import javafx.stage.Stage;
 import com.aplikasi.model.Tasks;
 import com.aplikasi.model.User;
+import com.aplikasi.model.PomodoroSession;
 import com.aplikasi.dao.TasksDAO;
-import com.aplikasi.dao.TrackingDAO;
+import com.aplikasi.dao.SessionDAO;
 import com.aplikasi.util.TimerUtil;
-import java.io.IOException;
-import java.sql.SQLException;
 
-/**
- * Controller untuk Timer (Pomodoro)
- * Menjalankan sesi Pomodoro dengan task yang dipilih
- */
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.awt.Toolkit;
+
 public class TimerController {
-    
-    @FXML private Label labelTimer;
-    @FXML private Label labelTask;
-    @FXML private Button btnStart;
-    @FXML private Button btnPause;
-    @FXML private Button btnReset;
+    @FXML private Label labelTimer, labelTask;
+    @FXML private Button btnStart, btnPause, btnReset;
     @FXML private ListView<Tasks> taskListView;
-    @FXML private Button btnGoToAdd;
-    @FXML private Button btnGoToManageTask;
-    @FXML private Button btnGoToReport;
+    @FXML private Spinner<Integer> spinnerMinutes;   // fokus
+    @FXML private Spinner<Integer> spinnerBreak;     // break
 
     private Timeline timeline;
-    private int timeSeconds = 1500; // 25 menit (25 * 60)
+    private int workSeconds = 60;   // default 1 menit
+    private int breakSeconds = 60;  // default 1 menit
+    private int timeSeconds;
+    private boolean isBreak = false;
     private User currentUser;
     private Tasks selectedTask;
+    private LocalDateTime sessionStart;
 
     @FXML
     public void initialize() {
+        // Spinner fokus (1–120 menit)
+        spinnerMinutes.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 120, 25));
+        spinnerMinutes.valueProperty().addListener((obs, oldVal, newVal) -> {
+            workSeconds = newVal * 60;
+            if (!isBreak) {
+                timeSeconds = workSeconds;
+                labelTimer.setText(TimerUtil.formatTime(timeSeconds));
+            }
+        });
+
+        // Spinner break (1–30 menit)
+        spinnerBreak.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 30, 5));
+        spinnerBreak.valueProperty().addListener((obs, oldVal, newVal) -> {
+            breakSeconds = newVal * 60;
+            if (isBreak) {
+                timeSeconds = breakSeconds;
+                labelTimer.setText(TimerUtil.formatTime(timeSeconds));
+            }
+        });
+
+        timeSeconds = workSeconds;
         labelTimer.setText(TimerUtil.formatTime(timeSeconds));
         labelTask.setText("Working On: -");
-        
-        // Listener untuk pilih task dari list
-        if (taskListView != null) {
-            taskListView.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldVal, newVal) -> {
-                    if (newVal != null) {
-                        selectedTask = newVal;
-                        labelTask.setText("Working On:\n" + newVal.getTitle());
-                        System.out.println("✔ Timer: Selected task - " + newVal.getTitle());
-                    }
-                }
-            );
-            
-            // Custom cell factory untuk menampilkan task dengan format lebih baik
-            taskListView.setCellFactory(lv -> new ListCell<Tasks>() {
-                @Override
-                protected void updateItem(Tasks item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getTitle() + "\n📅 " + item.getDeadline());
-                    }
-                }
-            });
-        }
+
+        // Listener task
+        taskListView.getSelectionModel().selectedItemProperty().addListener((obs, oldTask, newTask) -> {
+            if (newTask != null) {
+                selectedTask = newTask;
+                labelTask.setText("Working On:\n" + newTask.getTitle());
+            } else {
+                selectedTask = null;
+                labelTask.setText("Working On: -");
+            }
+        });
+
+        // Tampilan task di ListView
+        taskListView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Tasks item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getTitle() + "\n📅 " + item.getDeadline());
+            }
+        });
     }
-    
-    /**
-     * PENTING: Method ini dipanggil untuk inisialisasi controller dengan user
-     */
+
     public void initForUser(User user) {
         this.currentUser = user;
-        System.out.println("➡ Timer: User = " + currentUser.getUsername());
         loadPendingTasks();
     }
-    
-    /**
-     * Load task yang belum selesai milik user
-     */
+
     private void loadPendingTasks() {
-        if (currentUser == null) {
-            System.err.println("❌ Timer: currentUser is null!");
-            return;
-        }
-
+        if (currentUser == null) return;
         try {
-            // Ambil semua task milik user
             var allTasks = TasksDAO.getAllTasksByUser(currentUser.getId());
-
-            // Filter task yang pending (completed = false)
-            var pendingTasks = allTasks.stream()
-                    .filter(task -> !task.isCompleted())
-                    .toList();
-
-            // Tampilkan ke ListView
-            if (taskListView != null) {
-                taskListView.setItems(FXCollections.observableArrayList(pendingTasks));
-            }
-
-            System.out.println("✔ Timer: Loaded " + pendingTasks.size() + " pending tasks for user " + currentUser.getUsername());
-
+            var pendingTasks = allTasks.stream().filter(task -> !task.isCompleted()).toList();
+            taskListView.setItems(FXCollections.observableArrayList(pendingTasks));
         } catch (SQLException e) {
-            System.err.println("❌ Error loading tasks: " + e.getMessage());
-            e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database Error", "Gagal memuat daftar tugas.");
         }
     }
 
     @FXML
     private void handleStart() {
-    if (selectedTask == null) {
-        showAlert(Alert.AlertType.WARNING, "Peringatan", "Pilih task terlebih dahulu!");
-        return;
-    }
+        if (timeline != null && timeline.getStatus() == Timeline.Status.RUNNING) return;
 
-    if (currentUser == null) {
-        showAlert(Alert.AlertType.ERROR, "Error", "User tidak ditemukan!");
-        return;
-    }
+        sessionStart = LocalDateTime.now();
 
-    // Cegah timer dijalankan dobel
-    if (timeline != null && timeline.getStatus() == Timeline.Status.RUNNING) {
-        return;
-    }
+        if (!isBreak) {
+            timeSeconds = workSeconds;
+            labelTask.setText(selectedTask != null ? "Working On:\n" + selectedTask.getTitle() : "Working On: -");
+        } else {
+            timeSeconds = breakSeconds;
+            labelTask.setText("☕ Break Time!");
+        }
 
-    timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-        timeSeconds--;
-        labelTimer.setText(TimerUtil.formatTime(timeSeconds));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            timeSeconds--;
+            labelTimer.setText(TimerUtil.formatTime(timeSeconds));
 
-        if (timeSeconds <= 0) {
-            timeline.stop();
-            labelTask.setText("⏰ Waktu Habis! Break Time!");
+            if (timeSeconds <= 0) {
+                timeline.stop();
 
-            // ✅ SIMPAN TRACKING PRODUKTIVITAS
-            try {
-                TrackingDAO.updateSession(
-                    currentUser.getId(),   // ✅ konsisten pakai user_id
-                    1,                          // +1 sesi
-                    0.42                        // 25 menit ≈ 0.42 jam
-                );
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+                if (!isBreak) {
+                    // selesai kerja → popup break
+                    saveSession(false);
+                    isBreak = true;
+                    Platform.runLater(() -> {
+                        showBreakAlert(spinnerBreak.getValue());
+                        handleStart();
+                    });
+                } else {
+                    // selesai break → popup fokus
+                    saveSession(true);
+                    isBreak = false;
+                    Platform.runLater(() -> {
+                        showFocusAlert(spinnerMinutes.getValue());
+                        handleStart();
+                    });
+                }
             }
-
-            showCompletionAlert();
-        }
-    }));
-
-    timeline.setCycleCount(Timeline.INDEFINITE);
-    timeline.play();
-
-    System.out.println("▶ Timer started for task: " + selectedTask.getTitle());
-}
-
-
-    @FXML
-    private void handlePause() {
-        if (timeline != null) {
-            timeline.pause();
-            System.out.println("⏸ Timer paused");
-        }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
+
+    @FXML private void handlePause() { if (timeline != null) timeline.pause(); }
 
     @FXML
     private void handleReset() {
-        if (timeline != null) {
-            timeline.stop();
-        }
-        timeSeconds = 1500;
+        if (timeline != null) timeline.stop();
+        isBreak = false;
+        workSeconds = spinnerMinutes.getValue() * 60;
+        breakSeconds = spinnerBreak.getValue() * 60;
+        timeSeconds = workSeconds;
         labelTimer.setText(TimerUtil.formatTime(timeSeconds));
         labelTask.setText("Working On: -");
         selectedTask = null;
-        
-        if (taskListView != null) {
-            taskListView.getSelectionModel().clearSelection();
-        }
-        
-        System.out.println("🔄 Timer reset");
+        taskListView.getSelectionModel().clearSelection();
     }
-    
-    
-    @FXML
-    private void handleGoToManageTask() throws IOException {
-        navigateWithUser("/com/aplikasi/view/ManageTask.fxml", btnGoToManageTask);
+
+    private void saveSession(boolean completed) {
+        if (currentUser == null) return;
+        PomodoroSession session = new PomodoroSession(
+            0,
+            currentUser.getId(),
+            sessionStart,
+            LocalDateTime.now(),
+            workSeconds / 60,
+            breakSeconds / 60,
+            completed
+        );
+        SessionDAO.insertSession(session);
     }
-    
-    @FXML
-    private void handleGoToReport() throws IOException {
-        navigateWithUser("/com/aplikasi/view/Report.fxml", btnGoToReport);
-    }
-    
-    /**
-     * Helper method untuk navigasi dengan passing user
-     */
-    private void navigateWithUser(String fxmlPath, Button sourceButton) throws IOException {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Stage stage = (Stage) sourceButton.getScene().getWindow();
-            
-            loader.load();
-            
-            // Pass user ke controller baru
-            Object controller = loader.getController();
-            if (controller instanceof ManageTaskController) {
-                ((ManageTaskController) controller).initForUser(currentUser);
-            } else if (controller instanceof AddTaskController) {
-                AddTaskController addController = (AddTaskController) controller;
-                addController.initForUser(currentUser);
-            } else if (controller instanceof ReportController) {
-                ((ReportController) controller).initForUser(currentUser);
-            }
-            
-            stage.getScene().setRoot(loader.getRoot());
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka halaman");
-        }
-    }
-    
-    private void showCompletionAlert() {
+
+    private void showBreakAlert(int breakMinutes) {
+        Toolkit.getDefaultToolkit().beep();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Pomodoro Complete!");
-        alert.setHeaderText("Great Job! 🎉");
-        
-        if (selectedTask != null) {
-            alert.setContentText("You completed a Pomodoro session for:\n" + selectedTask.getTitle() + 
-                               "\n\nTime for a 5-minute break!");
-        } else {
-            alert.setContentText("You completed a Pomodoro session!\n\nTime for a 5-minute break!");
-        }
-        
+        alert.setTitle("Focus Session Complete!");
+        alert.setHeaderText("Waktu fokus selesai 🎉");
+        alert.setContentText("Saatnya break selama " + breakMinutes + " menit.\nKlik OK untuk memulai break.");
         alert.showAndWait();
     }
-    
+
+    private void showFocusAlert(int focusMinutes) {
+        Toolkit.getDefaultToolkit().beep();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Break Complete!");
+        alert.setHeaderText("Break selesai ☕");
+        alert.setContentText("Saatnya kembali fokus selama " + focusMinutes + " menit.\nKlik OK untuk memulai sesi fokus.");
+        alert.showAndWait();
+    }
+
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
