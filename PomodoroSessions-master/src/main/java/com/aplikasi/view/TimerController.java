@@ -1,42 +1,57 @@
 package com.aplikasi.view;
 
+import com.aplikasi.dao.SessionDAO;
+import com.aplikasi.dao.TrackingDAO;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 import javafx.collections.FXCollections;
+import javafx.stage.Stage;
 import com.aplikasi.model.Tasks;
 import com.aplikasi.model.User;
-import com.aplikasi.model.PomodoroSession;
 import com.aplikasi.dao.TasksDAO;
-import com.aplikasi.dao.SessionDAO;
+import com.aplikasi.model.PomodoroSession;
 import com.aplikasi.util.TimerUtil;
-
+import java.awt.Toolkit;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.awt.Toolkit;
+import javafx.application.Platform;
 
+/**
+ * Controller untuk Timer (Pomodoro)
+ * Menjalankan sesi Pomodoro dengan task yang dipilih
+ */
 public class TimerController {
-    @FXML private Label labelTimer, labelTask;
-    @FXML private Button btnStart, btnPause, btnReset;
+    
+    @FXML private Label labelTimer;
+    @FXML private Label labelTask;
+    @FXML private Button btnStart;
+    @FXML private Button btnPause;
+    @FXML private Button btnReset;
     @FXML private ListView<Tasks> taskListView;
+    @FXML private Button btnGoToAdd;
+    @FXML private Button btnGoToManageTask;
+    @FXML private Button btnGoToReport;
     @FXML private Spinner<Integer> spinnerMinutes;   // fokus
     @FXML private Spinner<Integer> spinnerBreak;     // break
 
+    
     private Timeline timeline;
+    private int timeSeconds;
     private int workSeconds = 60;   // default 1 menit
     private int breakSeconds = 60;  // default 1 menit
-    private int timeSeconds;
     private boolean isBreak = false;
+    private LocalDateTime sessionStart;
     private User currentUser;
     private Tasks selectedTask;
-    private LocalDateTime sessionStart;
 
     @FXML
     public void initialize() {
-        // Spinner fokus (1–120 menit)
+        // Spinner fokus (1–120 menit, default 25)
         spinnerMinutes.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 120, 25));
         spinnerMinutes.valueProperty().addListener((obs, oldVal, newVal) -> {
             workSeconds = newVal * 60;
@@ -46,7 +61,7 @@ public class TimerController {
             }
         });
 
-        // Spinner break (1–30 menit)
+        // Spinner break (1–30 menit, default 5)
         spinnerBreak.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 30, 5));
         spinnerBreak.valueProperty().addListener((obs, oldVal, newVal) -> {
             breakSeconds = newVal * 60;
@@ -60,7 +75,7 @@ public class TimerController {
         labelTimer.setText(TimerUtil.formatTime(timeSeconds));
         labelTask.setText("Working On: -");
 
-        // Listener task
+        // Listener task selection
         taskListView.getSelectionModel().selectedItemProperty().addListener((obs, oldTask, newTask) -> {
             if (newTask != null) {
                 selectedTask = newTask;
@@ -71,7 +86,7 @@ public class TimerController {
             }
         });
 
-        // Tampilan task di ListView
+        // Custom cell factory untuk tampilan task
         taskListView.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Tasks item, boolean empty) {
@@ -81,11 +96,17 @@ public class TimerController {
         });
     }
 
+    /**
+     * Inisialisasi controller dengan user yang login
+     */
     public void initForUser(User user) {
         this.currentUser = user;
         loadPendingTasks();
     }
 
+    /**
+     * Memuat daftar task yang belum completed
+     */
     private void loadPendingTasks() {
         if (currentUser == null) return;
         try {
@@ -97,6 +118,10 @@ public class TimerController {
         }
     }
 
+    /**
+     * Handler untuk tombol Start
+     * Memulai timer fokus atau break
+     */
     @FXML
     private void handleStart() {
         if (timeline != null && timeline.getStatus() == Timeline.Status.RUNNING) return;
@@ -119,16 +144,16 @@ public class TimerController {
                 timeline.stop();
 
                 if (!isBreak) {
-                    // selesai kerja → popup break
-                    saveSession(false);
+                    // Selesai fokus → save session (completed = true) → popup break
+                    saveSessionAndUpdateTracking(true);
                     isBreak = true;
                     Platform.runLater(() -> {
                         showBreakAlert(spinnerBreak.getValue());
                         handleStart();
                     });
                 } else {
-                    // selesai break → popup fokus
-                    saveSession(true);
+                    // Selesai break → save session (completed = false) → popup fokus
+                    saveSessionAndUpdateTracking(false);
                     isBreak = false;
                     Platform.runLater(() -> {
                         showFocusAlert(spinnerMinutes.getValue());
@@ -141,8 +166,18 @@ public class TimerController {
         timeline.play();
     }
 
-    @FXML private void handlePause() { if (timeline != null) timeline.pause(); }
+    /**
+     * Handler untuk tombol Pause
+     */
+    @FXML 
+    private void handlePause() { 
+        if (timeline != null) timeline.pause(); 
+    }
 
+    /**
+     * Handler untuk tombol Reset
+     * Menghentikan timer dan reset semua state
+     */
     @FXML
     private void handleReset() {
         if (timeline != null) timeline.stop();
@@ -156,20 +191,111 @@ public class TimerController {
         taskListView.getSelectionModel().clearSelection();
     }
 
-    private void saveSession(boolean completed) {
-        if (currentUser == null) return;
+    /**
+     * Navigasi ke halaman Manage Task
+     */
+    @FXML
+    private void handleGoToManageTask() throws IOException {
+        navigateWithUser("/com/aplikasi/view/ManageTask.fxml", btnGoToManageTask);
+    }
+    
+    /**
+     * Navigasi ke halaman Report
+     */
+    @FXML
+    private void handleGoToReport() throws IOException {
+        navigateWithUser("/com/aplikasi/view/Report.fxml", btnGoToReport);
+    }
+    
+    /**
+     * Helper method untuk navigasi dengan passing user
+     */
+    private void navigateWithUser(String fxmlPath, Button sourceButton) throws IOException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Stage stage = (Stage) sourceButton.getScene().getWindow();
+            
+            loader.load();
+            
+            // Pass user ke controller baru
+            Object controller = loader.getController();
+            if (controller instanceof ManageTaskController) {
+                ((ManageTaskController) controller).initForUser(currentUser);
+            } else if (controller instanceof AddTaskController) {
+                AddTaskController addController = (AddTaskController) controller;
+                addController.initForUser(currentUser);
+            } else if (controller instanceof ReportController) {
+                ((ReportController) controller).initForUser(currentUser);
+            }
+            
+            stage.getScene().setRoot(loader.getRoot());
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka halaman");
+        }
+    }
+    
+    /**
+     * Menyimpan session ke database DAN update tracking productivity
+     * @param isCompletedFocusSession true jika sesi fokus selesai, false jika break
+     */
+    private void saveSessionAndUpdateTracking(boolean isCompletedFocusSession) {
+        if (currentUser == null) {
+            System.out.println("⚠️ currentUser null, tidak bisa save session");
+            return;
+        }
+
+        LocalDateTime endTime = LocalDateTime.now();
+        
+        // Buat object PomodoroSession dengan 8 parameter
         PomodoroSession session = new PomodoroSession(
-            0,
+            0,  // session_id (auto increment, isi 0 saja)
             currentUser.getId(),
             sessionStart,
-            LocalDateTime.now(),
-            workSeconds / 60,
-            breakSeconds / 60,
-            completed
+            endTime,
+            workSeconds / 60,      // fokus duration dalam menit
+            breakSeconds / 60,     // break duration dalam menit
+            1,                     // total_sessions = 1
+            isCompletedFocusSession  // completed = true untuk fokus, false untuk break
         );
-        SessionDAO.insertSession(session);
+
+        try {
+            // 1. Insert session ke database
+            boolean inserted = SessionDAO.insertSession(session);
+            
+            if (inserted) {
+                System.out.println("✅ Session berhasil disimpan ke database");
+                System.out.println("   → Completed: " + isCompletedFocusSession);
+                
+                // 2. Update tracking productivity HANYA jika sesi fokus selesai
+                if (isCompletedFocusSession) {
+                    double focusHours = (workSeconds / 60.0) / 60.0; // convert menit ke jam
+                    TrackingDAO.updateSession(currentUser.getId(), 1, focusHours);
+                    System.out.println("✅ Tracking productivity berhasil diupdate");
+                    System.out.println("   → Focus hours: " + focusHours);
+                }
+            } else {
+                System.out.println("❌ Gagal menyimpan session");
+                // GUNAKAN Platform.runLater untuk alert
+                Platform.runLater(() -> 
+                    showAlert(Alert.AlertType.WARNING, "Warning", "Gagal menyimpan session ke database")
+                );
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("❌ Error saat menyimpan session atau update tracking");
+            e.printStackTrace();
+            // GUNAKAN Platform.runLater untuk alert
+            Platform.runLater(() -> 
+                showAlert(Alert.AlertType.ERROR, "Database Error", 
+                    "Terjadi kesalahan saat menyimpan data:\n" + e.getMessage())
+            );
+        }
     }
 
+    /**
+     * Menampilkan alert saat fokus selesai
+     */
     private void showBreakAlert(int breakMinutes) {
         Toolkit.getDefaultToolkit().beep();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -179,6 +305,9 @@ public class TimerController {
         alert.showAndWait();
     }
 
+    /**
+     * Menampilkan alert saat break selesai
+     */
     private void showFocusAlert(int focusMinutes) {
         Toolkit.getDefaultToolkit().beep();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -188,6 +317,9 @@ public class TimerController {
         alert.showAndWait();
     }
 
+    /**
+     * Helper method untuk menampilkan alert
+     */
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
