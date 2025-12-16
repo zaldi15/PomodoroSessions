@@ -1,4 +1,4 @@
-# PodoSchedule
+# Pomodoro+
 Aplikasi Manajemen Waktu Produktif Berbasis Desktop dengan Metode Pomodoro
 ## Pengenalan
 Dibuat oleh Kelompok 1 Kelas 3B:
