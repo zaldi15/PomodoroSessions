@@ -1,51 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.MenuController">
-
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #021526;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.MenuController">
     <children>
-        <SplitPane dividerPositions="0.23" prefHeight="400.0" prefWidth="600.0">
-            <items>
-
-                <!-- ===========================
-                     Sidebar Navigation (Left)
-                ============================ -->
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0">
+        <!-- Sidebar Navigation -->
+        <VBox layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="250.0" spacing="0.0" style="-fx-background-color: #03346E;">
+            <children>
+                <!-- App Logo/Title -->
+                <VBox alignment="CENTER" prefHeight="120.0" prefWidth="250.0" style="-fx-background-color: #021526;">
                     <children>
-                        <VBox prefHeight="400.0" prefWidth="140.0">
+                        <Label text="Pomodo+" textFill="#E2E2B6">
+                            <font>
+                                <Font name="System Bold" size="32.0" />
+                            </font>
+                        </Label>
+                        <Label text="Stay Focused, Get Things Done" textAlignment="CENTER" textFill="#6EACDA" wrapText="true">
+                            <font>
+                                <Font size="11.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="5.0" />
+                            </VBox.margin>
+                        </Label>
+                    </children>
+                </VBox>
+                
+                <!-- Navigation Label -->
+                <Label text="NAVIGATION" textFill="#6EACDA">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" top="20.0" />
+                    </VBox.margin>
+                </Label>
+                
+                <!-- Navigation Buttons -->
+                <VBox spacing="5.0">
+                    <padding>
+                        <Insets left="10.0" right="10.0" />
+                    </padding>
+                    <children>
+                        <Button fx:id="btnTimer" alignment="CENTER_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleTimer" prefHeight="50.0" style="-fx-background-color: #021526; -fx-background-radius: 8; -fx-cursor: hand; -fx-border-color: #6EACDA; -fx-border-width: 0 0 0 3; -fx-border-radius: 8;" text="🍅  Pomodoro Timer" textFill="#E2E2B6">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                        
+                        <Button fx:id="btnManageTask" alignment="CENTER_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleManageTask" prefHeight="50.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-cursor: hand;" text="📋  Task Management" textFill="#E2E2B6">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                        
+                        <Button fx:id="btnReport" alignment="CENTER_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleReport" prefHeight="50.0" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-cursor: hand;" text="📊  Report" textFill="#E2E2B6">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </VBox>
+                
+                <!-- Spacer -->
+                <VBox VBox.vgrow="ALWAYS" />
+                
+                <!-- Logout Button at Bottom -->
+                <Button fx:id="btnLogout" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogout" prefHeight="50.0" style="-fx-background-color: #6EACDA; -fx-background-radius: 8; -fx-cursor: hand;" text="🚪  Logout" textFill="#021526">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="10.0" right="10.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+        
+        <!-- Main Content Area -->
+        <AnchorPane layoutX="250.0" layoutY="0.0" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #021526;">
+            <children>
+                <!-- Header Bar -->
+                <HBox alignment="CENTER_LEFT" layoutX="0.0" layoutY="0.0" prefHeight="80.0" prefWidth="750.0" style="-fx-background-color: #03346E; -fx-border-color: #6EACDA; -fx-border-width: 0 0 2 0;">
+                    <padding>
+                        <Insets left="30.0" right="30.0" />
+                    </padding>
+                    <children>
+                        <Label text="Dashboard" textFill="#E2E2B6">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        
+                        <!-- Spacer -->
+                        <VBox HBox.hgrow="ALWAYS" />
+                        
+                        <!-- User Info Placeholder -->
+                        <VBox alignment="CENTER_RIGHT" spacing="2.0">
                             <children>
-                                <Label alignment="CENTER" prefHeight="100.0" prefWidth="140.0" text="NAVIGATION" />
-
-                                <Button fx:id="btnTimer" onAction="#handleTimer" prefHeight="50.0" prefWidth="140.0" text="Pomodoro Timer" />
-
-                                <Button fx:id="btnManageTask" onAction="#handleManageTask" prefHeight="50.0" prefWidth="140.0" text="Task Management" />
-                                
-                                <Button fx:id="btnReport" onAction="#handleReport" prefHeight="50.0" prefWidth="140.0" text="Report" />
-                                
-                                <Button fx:id="btnLogout" onAction="#handleLogout" prefHeight="50.0" prefWidth="140.0" text="Logout" />
-
+                                <Label text="Welcome back!" textFill="#6EACDA">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
                             </children>
                         </VBox>
                     </children>
-                </AnchorPane>
-
-                <!-- ===========================
-                     Main Content (Right)
-                     — Optional placeholder UI
-                ============================ -->
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="460.0">
+                </HBox>
+                
+                <!-- Main Content -->
+                <VBox alignment="CENTER" layoutX="0.0" layoutY="80.0" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
                     <children>
-                        <Label layoutX="86.0" layoutY="199.0" style="-fx-font-size: 18px;" text="please select a menu on the left" />
-                  <Label layoutX="150.0" layoutY="162.0" prefHeight="17.0" prefWidth="123.0" text="Welcome to Pomodo+" />
+                        <!-- Welcome Message -->
+                        <VBox alignment="CENTER" spacing="15.0">
+                            <children>
+                                <Label text="Welcome to Pomodo+" textFill="#E2E2B6">
+                                    <font>
+                                        <Font name="System Bold" size="36.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Your productivity companion for focused work sessions" textAlignment="CENTER" textFill="#6EACDA" wrapText="true">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
                     </children>
-                </AnchorPane>
-
-            </items>
-        </SplitPane>
+                </VBox>
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>
