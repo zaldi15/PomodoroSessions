@@ -66,7 +66,7 @@ public class ManageTaskController implements Initializable {
 
             // Optional: tracking
             if (newVal) {
-                TrackingDAO.updateSession(currentUser.getId(), 0, 0);
+                TrackingDAO.updateSession(currentUser.getUser_id(), 0, 0);
             }
 
         } catch (SQLException e) {
@@ -114,7 +114,6 @@ public class ManageTaskController implements Initializable {
      */
     public void initForUser(User user) {
         this.currentUser = user;
-        System.out.println("➡ ManageTask: User = " + currentUser.getUsername());
         refreshTableView();
     }
     
@@ -264,7 +263,7 @@ public class ManageTaskController implements Initializable {
         
         dataTasks.clear();
         try {
-            dataTasks.addAll(TasksDAO.getAllTasksByUser(currentUser.getId()));
+            dataTasks.addAll(TasksDAO.getAllTasksByUser(currentUser.getUser_id()));
             System.out.println("✔ ManageTask: Loaded " + dataTasks.size() + " tasks for user " + currentUser.getUsername());
         } catch (SQLException e) {
             System.err.println("Gagal memuat data tugas dari database: " + e.getMessage());
@@ -291,12 +290,12 @@ public class ManageTaskController implements Initializable {
     @FXML
     private void handleGoToManageTask(ActionEvent event) throws IOException {
         // Sudah di ManageTask, tidak perlu navigasi
-        System.out.println("Already in ManageTask");
+        System.out.println("Already in Task Management");
     }
 
     @FXML
     private void handleGoToReport(ActionEvent event) throws IOException {
-        navigateWithUser("/com/aplikasi/view/Report.fxml", btnGoToReport);
+        navigateWithUser("/com/aplikasi/view/TrackingView.fxml", btnGoToReport);
     }
     
     /**
@@ -313,8 +312,8 @@ public class ManageTaskController implements Initializable {
             Object controller = loader.getController();
             if (controller instanceof TimerController) {
                 ((TimerController) controller).initForUser(currentUser);
-            } else if (controller instanceof ReportController) {
-                ((ReportController) controller).initForUser(currentUser);
+            } else if (controller instanceof TrackingController) {
+                ((TrackingController) controller).initForUser(currentUser);
             }
             
             stage.getScene().setRoot(loader.getRoot());

@@ -123,13 +123,13 @@ public class MenuController implements Initializable {
         }
         
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/aplikasi/view/Report.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/aplikasi/view/TrackingView.fxml"));
             Stage stage = (Stage) btnReport.getScene().getWindow();
             
             loader.load();
             
             // Pass user ke ReportController
-            ReportController controller = loader.getController();
+            TrackingController controller = loader.getController();
             controller.initForUser(currentUser);
             
             stage.getScene().setRoot(loader.getRoot());

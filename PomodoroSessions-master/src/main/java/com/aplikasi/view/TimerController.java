@@ -110,7 +110,7 @@ public class TimerController {
     private void loadPendingTasks() {
         if (currentUser == null) return;
         try {
-            var allTasks = TasksDAO.getAllTasksByUser(currentUser.getId());
+            var allTasks = TasksDAO.getAllTasksByUser(currentUser.getUser_id());
             var pendingTasks = allTasks.stream().filter(task -> !task.isCompleted()).toList();
             taskListView.setItems(FXCollections.observableArrayList(pendingTasks));
         } catch (SQLException e) {
@@ -204,7 +204,7 @@ public class TimerController {
      */
     @FXML
     private void handleGoToReport() throws IOException {
-        navigateWithUser("/com/aplikasi/view/Report.fxml", btnGoToReport);
+        navigateWithUser("/com/aplikasi/view/TrackingView.fxml", btnGoToReport);
     }
     
     /**
@@ -224,8 +224,8 @@ public class TimerController {
             } else if (controller instanceof AddTaskController) {
                 AddTaskController addController = (AddTaskController) controller;
                 addController.initForUser(currentUser);
-            } else if (controller instanceof ReportController) {
-                ((ReportController) controller).initForUser(currentUser);
+            } else if (controller instanceof TrackingController) {
+                ((TrackingController) controller).initForUser(currentUser);
             }
             
             stage.getScene().setRoot(loader.getRoot());
@@ -250,7 +250,7 @@ public class TimerController {
         // Buat object PomodoroSession dengan 8 parameter
         PomodoroSession session = new PomodoroSession(
             0,  // session_id (auto increment, isi 0 saja)
-            currentUser.getId(),
+            currentUser.getUser_id(),
             sessionStart,
             endTime,
             workSeconds / 60,      // fokus duration dalam menit
@@ -270,7 +270,7 @@ public class TimerController {
                 // 2. Update tracking productivity HANYA jika sesi fokus selesai
                 if (isCompletedFocusSession) {
                     double focusHours = (workSeconds / 60.0) / 60.0; // convert menit ke jam
-                    TrackingDAO.updateSession(currentUser.getId(), 1, focusHours);
+                    TrackingDAO.updateSession(currentUser.getUser_id(), 1, focusHours);
                     System.out.println("✅ Tracking productivity berhasil diupdate");
                     System.out.println("   → Focus hours: " + focusHours);
                 }

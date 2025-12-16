@@ -13,6 +13,7 @@ com\aplikasi\model\PomodoroSession.class
 com\aplikasi\util\MainClass.class
 com\aplikasi\dao\TasksDAO.class
 com\aplikasi\model\User.class
+com\aplikasi\view\TrackingController.class
 com\aplikasi\util\TimerUtil.class
 com\aplikasi\view\ManageTaskController$1.class
 com\aplikasi\model\Report.class

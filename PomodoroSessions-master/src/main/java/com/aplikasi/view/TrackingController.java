@@ -1,7 +1,9 @@
 package com.aplikasi.view;
 
+import com.aplikasi.dao.TasksDAO;
 import com.aplikasi.dao.TrackingDAO;
 import com.aplikasi.model.TrackingProductivity;
+import com.aplikasi.model.User;
 import com.aplikasi.util.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +18,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 
 public class TrackingController implements Initializable {
 
@@ -35,16 +39,11 @@ public class TrackingController implements Initializable {
     @FXML private Button btnWeekly;
     @FXML private Button btnMonthly;
 
-    // --- Variabel Data ---
-    private int currentUserId = 1; // Default User ID (Nanti diganti Session)
-
+    private User currentUser;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // 1. Muat data ringkasan (Kartu di bawah)
-        loadSummaryData();
-
-        // 2. Muat grafik default (Daily)
-        handleFilterDaily(null);
+        
     }
 
     /**
@@ -53,7 +52,7 @@ public class TrackingController implements Initializable {
     private void loadSummaryData() {
         try {
             // Panggil method STATIC dari DAO baru
-            TrackingProductivity stats = TrackingDAO.getByUser(currentUserId);
+            TrackingProductivity stats = TrackingDAO.getByUser(currentUser.getUser_id());
 
             if (stats != null) {
                 // Update UI Kartu
@@ -103,7 +102,7 @@ public class TrackingController implements Initializable {
     private void handleFilterDaily(ActionEvent event) {
         try {
             // Panggil getDailyFocus dari DAO
-            double[] dailyData = TrackingDAO.getDailyFocus(currentUserId);
+            double[] dailyData = TrackingDAO.getDailyFocus(currentUser.getUser_id());
             updateChart("Fokus Harian (7 Hari Terakhir)", dailyData);
             setActiveButton(btnDaily);
         } catch (SQLException e) {
@@ -115,7 +114,7 @@ public class TrackingController implements Initializable {
     private void handleFilterWeekly(ActionEvent event) {
         try {
             // Panggil getWeeklyFocus dari DAO
-            double[] weeklyData = TrackingDAO.getWeeklyFocus(currentUserId);
+            double[] weeklyData = TrackingDAO.getWeeklyFocus(currentUser.getUser_id());
             updateChart("Fokus Mingguan (4 Minggu Terakhir)", weeklyData);
             setActiveButton(btnWeekly);
         } catch (SQLException e) {
@@ -127,7 +126,7 @@ public class TrackingController implements Initializable {
     private void handleFilterMonthly(ActionEvent event) {
         try {
             // Panggil getMonthlyFocus dari DAO
-            double[] monthlyData = TrackingDAO.getMonthlyFocus(currentUserId);
+            double[] monthlyData = TrackingDAO.getMonthlyFocus(currentUser.getUser_id());
             updateChart("Fokus Bulanan (1 Tahun Terakhir)", monthlyData);
             setActiveButton(btnMonthly);
         } catch (SQLException e) {
@@ -156,18 +155,56 @@ public class TrackingController implements Initializable {
 
     @FXML
     private void handleGoToTimer(ActionEvent event) throws IOException {
-        Stage stage = (Stage) btnGoToTimer.getScene().getWindow();
-        SceneManager.switchScene(stage, "/com/aplikasi/view/Timer.fxml");
+        navigateWithUser("/com/aplikasi/view/Timer.fxml", btnGoToTimer);
     }
 
     @FXML
     private void handleGoToManageTask(ActionEvent event) throws IOException {
-        Stage stage = (Stage) btnGoToManageTask.getScene().getWindow();
-        SceneManager.switchScene(stage, "/com/aplikasi/view/ManageTask.fxml");
+        navigateWithUser("/com/aplikasi/view/ManageTask.fxml", btnGoToManageTask);
     }
 
     @FXML
     private void handleGoToReport(ActionEvent event) {
-        // Stay here
+        System.out.println("Already in Report");
     }
+    
+    public void initForUser(User user) {
+        this.currentUser = user;
+        loadSummaryData();
+        handleFilterDaily(null);
+    }
+    
+    private void navigateWithUser(String fxmlPath, Button sourceButton) throws IOException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Stage stage = (Stage) sourceButton.getScene().getWindow();
+            
+            loader.load();
+            
+            // Pass user ke controller baru
+            Object controller = loader.getController();
+            if (controller instanceof ManageTaskController) {
+                ((ManageTaskController) controller).initForUser(currentUser);
+            } else if (controller instanceof AddTaskController) {
+                AddTaskController addController = (AddTaskController) controller;
+                addController.initForUser(currentUser);
+            } else if (controller instanceof TimerController) {
+                ((TimerController) controller).initForUser(currentUser);
+            }
+            
+            stage.getScene().setRoot(loader.getRoot());
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka halaman");
+        }
+    }
+    
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+    
 }
