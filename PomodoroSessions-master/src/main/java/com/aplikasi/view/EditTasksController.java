@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -23,24 +24,57 @@ import javafx.stage.Stage;
 /**
  * Controller untuk Edit Task
  * Mengedit tugas yang sudah ada
+ * UPDATED: Menambahkan ComboBox untuk mengubah kategori
  */
 public class EditTasksController implements Initializable {
 
     @FXML private TextArea txtDescription;
     @FXML private TextField txtTitle;
     @FXML private DatePicker datePickerDeadline;
+    @FXML private ComboBox<String> cbCategory; // ✅ BARU: ComboBox untuk kategori
     @FXML private Button btnGoToTimer;
     @FXML private Button btnGoToManageTask;
-    @FXML private Button btnGoToReport;
+    @FXML private Button btnGoTracking;
     @FXML private Button btnUpdate;
-
     private ManageTaskController parentController;
     private Tasks taskToEdit;
     private User currentUser;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialization jika diperlukan
+        // ✅ BARU: Inisialisasi ComboBox kategori
+        if (cbCategory != null) {
+            cbCategory.getItems().addAll("Academic", "Project", "Development");
+            
+            // Style dinamis berdasarkan pilihan
+            cbCategory.setOnAction(event -> {
+                updateCategoryStyle();
+            });
+        }
+    }
+    
+    /**
+     * ✅ BARU: Update style ComboBox berdasarkan kategori yang dipilih
+     */
+    private void updateCategoryStyle() {
+        if (cbCategory == null) return;
+        
+        String category = cbCategory.getValue();
+        String style = "";
+        
+        switch (category) {
+            case "Academic":
+                style = "-fx-background-color: #4A90E2; -fx-text-fill: white;";
+                break;
+            case "Project":
+                style = "-fx-background-color: #50C878; -fx-text-fill: white;";
+                break;
+            case "Development":
+                style = "-fx-background-color: #FF6B6B; -fx-text-fill: white;";
+                break;
+        }
+        
+        cbCategory.setStyle(style);
     }
     
     /**
@@ -52,7 +86,7 @@ public class EditTasksController implements Initializable {
     }
     
     /**
-     * Set task yang akan diedit dan isi field dengan data task
+     * ✅ UPDATED: Set task yang akan diedit dan isi field dengan data task termasuk kategori
      */
     public void setTask(Tasks task) {
         this.taskToEdit = task;
@@ -60,7 +94,14 @@ public class EditTasksController implements Initializable {
             txtTitle.setText(task.getTitle());
             datePickerDeadline.setValue(task.getDeadline());
             txtDescription.setText(task.getDescription());
-            System.out.println("✔ EditTask: Loaded task - " + task.getTitle());
+            
+            // ✅ BARU: Set kategori yang sesuai
+            if (cbCategory != null) {
+                cbCategory.setValue(task.getCategory());
+                updateCategoryStyle();
+            }
+            
+            System.out.println("✔ EditTask: Loaded task - " + task.getTitle() + " [" + task.getCategory() + "]");
         }
     }
     
@@ -72,54 +113,61 @@ public class EditTasksController implements Initializable {
     }
 
     @FXML
-private void handleEditTask(ActionEvent event) {
-    if (currentUser == null) {
-        showAlert(Alert.AlertType.ERROR, "Error", "User tidak teridentifikasi");
-        return;
-    }
-    
-    if (taskToEdit == null) {
-        showAlert(Alert.AlertType.WARNING, "Peringatan", "Task tidak ditemukan");
-        return;
-    }
-
-    String newTitle = txtTitle.getText().trim();
-    LocalDate newDeadline = datePickerDeadline.getValue();
-    String newDescription = txtDescription.getText().trim();
-    
-    if (newTitle.isEmpty() || newDeadline == null || newDescription.isEmpty()) {
-        showAlert(Alert.AlertType.WARNING, "Input Error", "Semua field harus terisi");
-        return;
-    }
-    
-    if (newDeadline.isBefore(LocalDate.now())) {
-        showAlert(Alert.AlertType.WARNING, "Input Error", "Deadline tidak boleh di masa lalu");
-        return;
-    }
-    
-    try {
-        taskToEdit.setTitle(newTitle);
-        taskToEdit.setDeadline(newDeadline);
-        taskToEdit.setDescription(newDescription); 
-
-        TasksDAO.updateEntry(taskToEdit);
-        
-        if (parentController != null) {
-            parentController.refreshTableView();
+    private void handleEditTask(ActionEvent event) {
+        if (currentUser == null) {
+            showAlert(Alert.AlertType.ERROR, "Error", "User tidak teridentifikasi");
+            return;
         }
         
-        showAlert(Alert.AlertType.INFORMATION, "Sukses", "Tugas berhasil diupdate");
-        handleGoToManageTask(event);
-        
-    } catch (SQLException e) {
-        e.printStackTrace();
-        showAlert(Alert.AlertType.ERROR, "Database Error", "Gagal mengupdate tugas.");
-    } catch (Exception e) {
-        e.printStackTrace();
-        showAlert(Alert.AlertType.ERROR, "Error", "Terjadi kesalahan.");
-    }
-}
+        if (taskToEdit == null) {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Task tidak ditemukan");
+            return;
+        }
 
+        String newTitle = txtTitle.getText().trim();
+        LocalDate newDeadline = datePickerDeadline.getValue();
+        String newDescription = txtDescription.getText().trim();
+        String newCategory = cbCategory.getValue(); // ✅ BARU: Ambil kategori baru
+        
+        if (newTitle.isEmpty() || newDeadline == null || newDescription.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Semua field harus terisi");
+            return;
+        }
+        
+        // ✅ BARU: Validasi kategori
+        if (newCategory == null || newCategory.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Kategori harus dipilih");
+            return;
+        }
+        
+        if (newDeadline.isBefore(LocalDate.now())) {
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Deadline tidak boleh di masa lalu");
+            return;
+        }
+        
+        try {
+            taskToEdit.setTitle(newTitle);
+            taskToEdit.setDeadline(newDeadline);
+            taskToEdit.setDescription(newDescription);
+            taskToEdit.setCategory(newCategory); // ✅ BARU: Update kategori
+
+            TasksDAO.updateEntry(taskToEdit);
+            
+            if (parentController != null) {
+                parentController.refreshTableView();
+            }
+            
+            showAlert(Alert.AlertType.INFORMATION, "Sukses", "Tugas berhasil diupdate");
+            handleGoToManageTask(event);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Gagal mengupdate tugas.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Terjadi kesalahan.");
+        }
+    }
 
     @FXML
     private void handleGoToTimer(ActionEvent event) throws IOException {
@@ -132,9 +180,11 @@ private void handleEditTask(ActionEvent event) {
     }
 
     @FXML
-    private void handleGoToReport(ActionEvent event) throws IOException {
-        navigateWithUser("/com/aplikasi/view/Report.fxml", btnGoToReport);
+    private void handleGoTracking(ActionEvent event) throws IOException {
+        navigateWithUser("/com/aplikasi/view/TrackingView.fxml", btnGoTracking);
     }
+    
+ 
     
     /**
      * Helper method untuk navigasi dengan passing user
@@ -152,9 +202,10 @@ private void handleEditTask(ActionEvent event) {
                 ((ManageTaskController) controller).initForUser(currentUser);
             } else if (controller instanceof TimerController) {
                 ((TimerController) controller).initForUser(currentUser);
-            } else if (controller instanceof ReportController) {
-                ((ReportController) controller).initForUser(currentUser);
-            }
+            } else if (controller instanceof TrackingController) {
+                ((TrackingController) controller).initForUser(currentUser);
+           
+        }
             
             stage.getScene().setRoot(loader.getRoot());
         } catch (IOException e) {
