@@ -4,10 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * Model untuk Tasks (Tugas)
  * Mewakili satu tugas dalam aplikasi Pomodoro
+ * UPDATED: Menambahkan fitur kategori task
  */
 public class Tasks {
     private int task_id;
@@ -17,17 +20,41 @@ public class Tasks {
     private LocalDate deadline;
     private BooleanProperty completed;
     private LocalDateTime created_at;
+    private StringProperty category; // ✅ BARU: Kategori task
+    
+    // Enum untuk kategori yang tersedia
+    public enum TaskCategory {
+        ACADEMIC("Academic"),
+        PROJECT("Project"),
+        DEVELOPMENT("Development");
+        
+        private final String displayName;
+        
+        TaskCategory(String displayName) {
+            this.displayName = displayName;
+        }
+        
+        public String getDisplayName() {
+            return displayName;
+        }
+        
+        @Override
+        public String toString() {
+            return displayName;
+        }
+    }
     
     /**
      * Constructor untuk membuat task baru (sebelum disimpan ke database)
      * Digunakan saat user input task baru di AddTasksController
      */
-    public Tasks(String title, LocalDate deadline, String description, boolean completed) {
+    public Tasks(String title, LocalDate deadline, String description, boolean completed, String category) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
         this.completed = new SimpleBooleanProperty(completed);
-        this.created_at = LocalDateTime.now(); // Set waktu pembuatan
+        this.category = new SimpleStringProperty(category != null ? category : "Academic"); // Default ke Academic
+        this.created_at = LocalDateTime.now();
     }
     
     /**
@@ -35,7 +62,7 @@ public class Tasks {
      * Digunakan saat load task dari database di TasksDAO
      */
     public Tasks(int task_id, int user_id, String title, LocalDate deadline, 
-                 String description, boolean completed, LocalDateTime created_at) {
+                 String description, boolean completed, LocalDateTime created_at, String category) {
         this.task_id = task_id;
         this.user_id = user_id;
         this.title = title;
@@ -43,6 +70,7 @@ public class Tasks {
         this.deadline = deadline;
         this.completed = new SimpleBooleanProperty(completed);
         this.created_at = created_at;
+        this.category = new SimpleStringProperty(category != null ? category : "Academic");
     }
     
     // ==================== GETTERS ====================
@@ -87,6 +115,21 @@ public class Tasks {
         return created_at;
     }
     
+    /**
+     * ✅ BARU: Getter untuk category sebagai String
+     */
+    public String getCategory() {
+        return category.get();
+    }
+    
+    /**
+     * ✅ BARU: Getter untuk category sebagai Property
+     * Digunakan oleh TableView
+     */
+    public StringProperty categoryProperty() {
+        return category;
+    }
+    
     // ==================== SETTERS ====================
     
     public void setTask_id(int task_id) {
@@ -121,15 +164,22 @@ public class Tasks {
         this.created_at = created_at;
     }
     
+    /**
+     * ✅ BARU: Setter untuk category
+     */
+    public void setCategory(String category) {
+        this.category.set(category != null ? category : "Academic");
+    }
+    
     // ==================== UTILITY METHODS ====================
     
     /**
      * Override toString untuk debugging dan display di ListView
-     * Format: "Title - Deadline"
+     * Format: "[Category] Title - Deadline"
      */
     @Override
     public String toString() {
-        return title + " - " + deadline;
+        return "[" + category.get() + "] " + title + " - " + deadline;
     }
     
     /**
@@ -167,6 +217,38 @@ public class Tasks {
         } else {
             long days = getDaysUntilDeadline();
             return "⏰ " + days + " day(s) left";
+        }
+    }
+    
+    /**
+     * ✅ BARU: Get icon berdasarkan kategori
+     */
+    public String getCategoryIcon() {
+        switch (category.get()) {
+            case "Academic":
+                return "📚";
+            case "Project":
+                return "🎯";
+            case "Development":
+                return "💻";
+            default:
+                return "📋";
+        }
+    }
+    
+    /**
+     * ✅ BARU: Get warna berdasarkan kategori (untuk styling)
+     */
+    public String getCategoryColor() {
+        switch (category.get()) {
+            case "Academic":
+                return "#4A90E2"; // Biru
+            case "Project":
+                return "#50C878"; // Hijau
+            case "Development":
+                return "#FF6B6B"; // Merah
+            default:
+                return "#95A5A6"; // Abu-abu
         }
     }
 }
