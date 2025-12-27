@@ -1,45 +1,108 @@
 package com.aplikasi.util;
 
+import com.aplikasi.model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 public class MainClass extends Application {
-    
-    // Inisialisasi Statis untuk uji koneksi awal
-    static {
-        // Uji koneksi database saat aplikasi dimuat
-        if (DBConnection.getConnection() == null) {
-            System.err.println("APLIKASI TIDAK DAPAT DILUNCURKAN: Gagal terhubung ke database.");
-            // Di lingkungan nyata, ini harus menampilkan dialog error yang user-friendly
-            System.exit(1); 
+
+    private static Stage mainStage;
+
+    @Override
+    public void start(Stage primaryStage) {
+        setMainStage(primaryStage);
+        primaryStage.setTitle("Aplikasi Pomodoro - Kelompok 1");
+
+        // Start dari halaman LOGIN
+        openLoginPage();
+    }
+
+    public static void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+
+    // ✅ METHOD UNTUK ADMIN (BARU)
+    // Dipanggil dari LoginController jika role == 'admin'
+    public static void openAdminDashboard(User user) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("/com/aplikasi/view/AdminDashboard.fxml"));
+            Parent root = loader.load();
+
+            // Opsional: Jika Anda membuat AdminController, Anda bisa mengirim data user ke sana
+            // com.aplikasi.controller.AdminController controller = loader.getController();
+            // controller.initData(user);
+
+            mainStage.setScene(new Scene(root));
+            mainStage.setTitle("Pomodoro - Admin Panel [" + user.getUsername() + "]");
+            mainStage.show();
+
+            System.out.println("✅ AdminDashboard.fxml loaded for Admin: " + user.getUsername());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("❌ Error loading AdminDashboard.fxml - Pastikan file FXML sudah dibuat");
         }
     }
 
-    @Override
-    public void start(Stage primaryStage) throws IOException {
+    // ✅ METHOD UNTUK USER BIASA
+    // Dipanggil dari LoginController jika role == 'user'
+    public static void openMenuUtama(User user) {
         try {
-  
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/aplikasi/view/Register.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("/com/aplikasi/view/MenuUtama.fxml"));
             Parent root = loader.load();
-            
-            Scene scene = new Scene(root);
-            primaryStage.setTitle("Login - Aplikasi Pomodoro");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-            
-        } catch (IOException e) {
-            System.err.println("Gagal memuat FXML: " + e.getMessage());
+
+            // Inject user ke controller menu utama
+            Object controller = loader.getController();
+            if (controller instanceof com.aplikasi.view.MenuController) {
+                ((com.aplikasi.view.MenuController) controller).initForUser(user);
+            }
+
+            mainStage.setScene(new Scene(root));
+            mainStage.setTitle("Pomodoro Sessions - " + user.getUsername());
+            mainStage.show();
+
+            System.out.println("✅ MenuUtama.fxml loaded for User: " + user.getUsername());
+
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("❌ Error loading MenuUtama.fxml");
+        }
+    }
+
+    // ✅ Membuka halaman LOGIN
+    public static void openLoginPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("/com/aplikasi/view/Login.fxml"));
+            Parent root = loader.load();
+            mainStage.setScene(new Scene(root));
+            mainStage.centerOnScreen();
+            mainStage.show();
+
+            System.out.println("✅ Login.fxml loaded");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("❌ Error loading Login.fxml");
+        }
+    }
+
+    // ✅ Membuka halaman REGISTER
+    public static void openRegisterPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("/com/aplikasi/view/Register.fxml"));
+            Parent root = loader.load();
+            mainStage.setScene(new Scene(root));
+            mainStage.show();
+            System.out.println("✅ Register.fxml loaded");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("❌ Error loading Register.fxml");
         }
     }
 
     public static void main(String[] args) {
         launch(args);
-        // Pastikan koneksi ditutup saat aplikasi di-close
-        DBConnection.closeConnection(); 
     }
 }

@@ -2,60 +2,109 @@ package com.aplikasi.view;
 
 import com.aplikasi.controller.UserController;
 import com.aplikasi.model.User;
-import com.aplikasi.util.SceneManager; // Class utilitas untuk ganti scene (DIBUAT MANUAL)
+import com.aplikasi.util.MainClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-import java.io.IOException;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class LoginController {
     
     @FXML private TextField txtUsername;
     @FXML private PasswordField txtPassword;
     @FXML private Button btnLogin;
+    @FXML private Hyperlink linkRegister;
     
     private final UserController userController = new UserController();
 
-    
     @FXML
-    private void handleLogin() {
-        String username = txtUsername.getText();
-        String password = txtPassword.getText();
-        
-        // Panggil Controller (Lapisan Logic)
-        User loggedInUser = userController.login(username, password);
-        
-        if (loggedInUser != null) {
-            showAlert(Alert.AlertType.INFORMATION, "Sukses!", "Selamat datang, " + loggedInUser.getUsername());
-            
-            // TODO: Simpan user ID di Sesi Global sebelum pindah
-            // GlobalSession.setCurrentUser(loggedInUser);
-
-            // Ganti Scene ke Dashboard (Tugas Zaldi Arifa)
-            try {
-                Stage stage = (Stage) btnLogin.getScene().getWindow();
-                SceneManager.switchScene(stage, "/com/aplikasi/view/Dashboard.fxml");
-            } catch (IOException e) {
-                 showAlert(Alert.AlertType.ERROR, "Error", "Gagal memuat Dashboard.");
-            }
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Login Gagal", "Username atau Password salah.");
+    public void initialize() {
+        // Memungkinkan user menekan Enter untuk login
+        if (txtPassword != null) {
+            txtPassword.setOnKeyPressed(this::handleKeyPressed);
+        }
+        if (txtUsername != null) {
+            txtUsername.setOnKeyPressed(this::handleKeyPressed);
+        }
+    }
+    
+    private void handleKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleLogin();
         }
     }
 
-    // Metode untuk navigasi ke Registrasi
     @FXML
-    private void handleGotoRegister() throws IOException {
-        Stage stage = (Stage) btnLogin.getScene().getWindow();
-        SceneManager.switchScene(stage, "/com/aplikasi/view/Registration.fxml");
+    private void handleLogin() {
+        String username = txtUsername.getText().trim();
+        String password = txtPassword.getText().trim();
+
+        // 1. Validasi Input Kosong
+        if (username.isEmpty() || password.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Username dan password tidak boleh kosong");
+            return;
+        }
+
+        // 2. Visual Feedback (Loading)
+        if (btnLogin != null) {
+            btnLogin.setDisable(true);
+            btnLogin.setText("Logging in...");
+        }
+
+        try {
+            // 3. Panggil UserController untuk proses login
+            User loggedInUser = userController.login(username, password);
+
+            if (loggedInUser != null) {
+                System.out.println("✔ Login successful: " + loggedInUser.getUsername());
+                clearFields();
+
+                // 4. CEK ROLE: Apakah dia Admin atau User Biasa?
+                if (loggedInUser.isAdmin()) {
+                    System.out.println("⭐ Akun ADMIN terdeteksi. Membuka Dashboard Admin...");
+                    MainClass.openAdminDashboard(loggedInUser); 
+                } else {
+                    System.out.println("👤 Akun USER terdeteksi. Membuka Menu Utama...");
+                    MainClass.openMenuUtama(loggedInUser);
+                }
+
+            } else {
+                // 5. Jika Gagal, kembalikan tombol ke kondisi semula
+                showAlert(Alert.AlertType.ERROR, "Login Gagal", "Username atau password salah");
+                resetLoginButton();
+            }
+
+        } catch (Exception e) {
+            System.err.println("❌ Login error: " + e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Terjadi error sistem saat login");
+            resetLoginButton();
+        }
+    }
+
+    private void resetLoginButton() {
+        if (btnLogin != null) {
+            btnLogin.setDisable(false);
+            btnLogin.setText("Login");
+        }
+    }
+
+    @FXML
+    private void handleGotoRegister() {
+        clearFields();
+        MainClass.openRegisterPage();
     }
     
-    // Utilitas untuk menampilkan alert
-    private void showAlert(Alert.AlertType type, String title, String content) {
+    private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(content);
+        alert.setContentText(message);
         alert.showAndWait();
+    }
+    
+    private void clearFields() {
+        if (txtUsername != null) txtUsername.clear();
+        if (txtPassword != null) txtPassword.clear();
     }
 }

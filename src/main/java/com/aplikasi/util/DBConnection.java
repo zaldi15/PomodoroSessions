@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
     
-    private static Connection koneksi;
+ 
     
     
     private static final String URL = "jdbc:mysql://localhost:3306/db_pomodoro";
@@ -20,33 +20,15 @@ public class DBConnection {
 
     
     public static Connection getConnection() {
-        
-        if (koneksi == null) {
-            try {
-                
-                koneksi = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println("✅ Koneksi database berhasil dibuat.");
-                
-            } catch (SQLException e) {
-                
-                System.err.println("❌ GAGAL TERHUBUNG KE DATABASE.");
-                System.err.println("Pesan Error: " + e.getMessage());
-                
-            } 
-        }
-        return koneksi;
+    try {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    } catch (SQLException e) {
+        System.err.println("❌ GAGAL TERHUBUNG KE DATABASE.");
+        throw new RuntimeException(e);
     }
+}
+
     
     
-    public static void closeConnection() {
-        if (koneksi != null) {
-            try {
-                koneksi.close();
-                koneksi = null; 
-                System.out.println("☑️ Koneksi database ditutup.");
-            } catch (SQLException e) {
-                System.err.println("Gagal menutup koneksi: " + e.getMessage());
-            }
-        }
-    }
+    
 }
