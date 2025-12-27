@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #021526;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.LoginController">
+   <children>
+      <!-- Left Panel - Decorative -->
+      <AnchorPane layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: #03346E;">
+         <children>
+            <VBox alignment="CENTER" layoutX="50.0" layoutY="200.0" prefHeight="200.0" prefWidth="300.0" spacing="20.0">
+               <children>
+                  <Label text="Welcome Back!" textFill="#E2E2B6">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label text="Login to access your account" textAlignment="CENTER" textFill="#6EACDA" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      
+      <!-- Right Panel - Login Form -->
+      <VBox alignment="CENTER" layoutX="400.0" layoutY="0.0" prefHeight="600.0" prefWidth="500.0" spacing="25.0" style="-fx-background-color: #021526;">
+         <padding>
+            <Insets bottom="50.0" left="80.0" right="80.0" top="50.0" />
+         </padding>
+         <children>
+            <Label text="Sign In" textFill="#E2E2B6">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            
+            <Label text="Please login to continue" textFill="#6EACDA">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            
+            <VBox spacing="15.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label text="Username" textFill="#E2E2B6">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtUsername" prefHeight="45.0" promptText="Enter your username" style="-fx-background-color: #03346E; -fx-text-fill: #E2E2B6; -fx-prompt-text-fill: #6EACDA; -fx-background-radius: 8; -fx-border-color: #6EACDA; -fx-border-radius: 8; -fx-border-width: 1;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label text="Password" textFill="#E2E2B6">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <PasswordField fx:id="txtPassword" prefHeight="45.0" promptText="Enter your password" style="-fx-background-color: #03346E; -fx-text-fill: #E2E2B6; -fx-prompt-text-fill: #6EACDA; -fx-background-radius: 8; -fx-border-color: #6EACDA; -fx-border-radius: 8; -fx-border-width: 1;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </PasswordField>
+                     </children>
+                  </VBox>
+                  
+                  <Button fx:id="btnLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleLogin" prefHeight="45.0" style="-fx-background-color: #6EACDA; -fx-background-radius: 8; -fx-cursor: hand;" text="Login" textFill="#021526">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  
+                  <HBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Label text="Don't have an account?" textFill="#6EACDA">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#handleGotoRegister" style="-fx-background-color: transparent; -fx-text-fill: #E2E2B6; -fx-underline: true; -fx-cursor: hand;" text="Register here">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #021526;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.AddTaskController">
+    <children>
+        <VBox layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="250.0" style="-fx-background-color: #03346E;">
+            <children>
+                <VBox alignment="CENTER" prefHeight="120.0" prefWidth="250.0" style="-fx-background-color: #021526;">
+                    <children>
+                        <Label text="Pomodo+" textFill="#E2E2B6">
+                            <font><Font name="System Bold" size="32.0" /></font>
+                        </Label>
+                        <Label text="Stay Focused, Get Things Done" textAlignment="CENTER" textFill="#6EACDA">
+                            <font><Font size="11.0" /></font>
+                        </Label>
+                    </children>
+                </VBox>
+                <Label text="NAVIGATION" textFill="#6EACDA">
+                    <font><Font name="System Bold" size="12.0" /></font>
+                    <VBox.margin><Insets bottom="10.0" left="20.0" top="20.0" /></VBox.margin>
+                </Label>
+                <VBox spacing="5.0">
+                    <padding><Insets left="10.0" right="10.0" /></padding>
+                    <children>
+                        <Button fx:id="btnGoToTimer" onAction="#handleGoToTimer" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="50.0" style="-fx-background-color: transparent;" text="🍅  Pomodoro Timer" textFill="#E2E2B6" />
+                        <Button fx:id="btnGoToManageTask" onAction="#handleGoToManageTask" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="50.0" style="-fx-background-color: #021526; -fx-border-color: #6EACDA; -fx-border-width: 0 0 0 3;" text="📋  Task Management" textFill="#E2E2B6" />
+                        <Button fx:id="btnGoToReport" onAction="#handleGoToReport" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="50.0" style="-fx-background-color: transparent;" text="📊  Report" textFill="#E2E2B6" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+        
+        <AnchorPane layoutX="250.0" layoutY="0.0" prefHeight="600.0" prefWidth="750.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="750.0" style="-fx-background-color: #03346E; -fx-border-color: #6EACDA; -fx-border-width: 0 0 2 0;">
+                    <padding><Insets left="30.0" /></padding>
+                    <children>
+                        <Label text="➕ Add New Task" textFill="#E2E2B6">
+                            <font><Font name="System Bold" size="24.0" /></font>
+                        </Label>
+                    </children>
+                </HBox>
+                
+                <VBox layoutY="80.0" prefHeight="520.0" prefWidth="750.0" spacing="15.0">
+                    <padding><Insets bottom="30.0" left="60.0" right="60.0" top="20.0" /></padding>
+                    <children>
+                        <VBox spacing="15.0" style="-fx-background-color: #03346E; -fx-background-radius: 15; -fx-border-color: #6EACDA; -fx-border-radius: 15; -fx-border-width: 2; -fx-padding: 30;">
+                            <children>
+                                <VBox spacing="5.0">
+                                    <Label text="📝 Task Name" textFill="#E2E2B6"><font><Font name="System Bold" size="13.0" /></font></Label>
+                                    <TextField fx:id="txtTitle" prefHeight="40.0" style="-fx-background-color: #021526; -fx-text-fill: white; -fx-border-color: #6EACDA; -fx-border-radius: 5;" />
+                                </VBox>
+
+                                <VBox spacing="5.0">
+                                    <Label text="📂 Category" textFill="#E2E2B6"><font><Font name="System Bold" size="13.0" /></font></Label>
+                                    <ComboBox fx:id="comboCategory" maxWidth="1.7976931348623157E308" prefHeight="40.0" style="-fx-background-color: #021526; -fx-border-color: #6EACDA; -fx-border-radius: 5;" />
+                                </VBox>
+                                
+                                <VBox spacing="5.0">
+                                    <Label text="📅 Deadline" textFill="#E2E2B6"><font><Font name="System Bold" size="13.0" /></font></Label>
+                                    <DatePicker fx:id="datePickerDeadline" maxWidth="1.7976931348623157E308" prefHeight="40.0" style="-fx-background-color: #021526;" />
+                                </VBox>
+                                
+                                <VBox spacing="5.0">
+                                    <Label text="📄 Description" textFill="#E2E2B6"><font><Font name="System Bold" size="13.0" /></font></Label>
+                                    <TextArea fx:id="txtDescription" prefHeight="100.0" style="-fx-control-inner-background: #021526; -fx-text-fill: white;" wrapText="true" />
+                                </VBox>
+                                
+                                <HBox alignment="CENTER" spacing="20.0">
+                                    <Button onAction="#handleGoToManageTask" prefWidth="120.0" style="-fx-background-color: transparent; -fx-border-color: #6EACDA; -fx-border-radius: 5;" text="Cancel" textFill="#E2E2B6" />
+                                    <Button onAction="#handleAddTask" prefWidth="120.0" style="-fx-background-color: #6EACDA; -fx-background-radius: 5;" text="Save Task" textFill="#021526">
+                                        <font><Font name="System Bold" size="13.0" /></font>
+                                    </Button>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
