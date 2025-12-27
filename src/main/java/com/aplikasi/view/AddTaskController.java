@@ -2,103 +2,105 @@ package com.aplikasi.view;
 
 import com.aplikasi.dao.TasksDAO;
 import com.aplikasi.model.Tasks;
-import com.aplikasi.model.User;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-
+import com.aplikasi.util.SceneManager;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-public class AddTaskController implements Initializable {
+/**
+ * Controller untuk menambahkan tugas baru.
+ */
+public class AddTasksController implements Initializable {
 
-    @FXML private TextField txtTitle;
-    @FXML private ComboBox<String> comboCategory;
-    @FXML private DatePicker datePickerDeadline;
-    @FXML private TextArea txtDescription;
-    @FXML private Button btnGoToTimer, btnGoToManageTask, btnGoToReport;
+    @FXML
+    private TextArea txtDescription;
+    @FXML
+    private TextField txtTitle;
+    @FXML
+    private DatePicker datePickerDeadline;
     
-    private ManageTaskController parentController; // Pastikan tipe class ini benar
-    private User currentUser;
+    @FXML
+    private ComboBox<String> cmbCategory; 
+    
+    @FXML
+    private Button btnGoToTimer;
+    @FXML
+    private Button btnGoToManageTask;
+    @FXML
+    private Button btnGoToReport;
+    
+    private ManageTaskController parentController;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        comboCategory.setItems(FXCollections.observableArrayList(
-            "Academics", "Project", "Development",  "Lainnya"
-        ));
-        comboCategory.getSelectionModel().selectFirst();
-    }
-    
-    public void initForUser(User user) {
-        this.currentUser = user;
-    }
-    
-    public void setParentController(ManageTaskController manageController) {
+    public void setParentController(ManageTaskController manageController){
         this.parentController = manageController;
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // Mengisi pilihan kategori
+        if (cmbCategory != null) {
+            cmbCategory.getItems().addAll("Academic", "Project", "Development");
+            cmbCategory.setValue("Academic"); 
+        }
+    }    
+
     @FXML
     private void handleAddTask(ActionEvent event) {
-        if (currentUser == null) {
-            showAlert(Alert.AlertType.ERROR, "Error", "User session hilang!");
-            return;
-        }
-        
-        String title = txtTitle.getText().trim();
-        String category = comboCategory.getValue();
+        String title = txtTitle.getText();
+        String category = cmbCategory.getValue(); 
         LocalDate deadline = datePickerDeadline.getValue();
-        String description = txtDescription.getText().trim();
+        String description = txtDescription.getText();
 
-        if (title.isEmpty() || deadline == null || description.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Input Error", "Mohon lengkapi semua data!");
+        // 1. Validasi input
+        if (title.isEmpty() || category == null || deadline == null || description.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Input Error", "Semua kolom harus diisi!");
             return;
         }
-        
+
         try {
-            // 1. Buat Object Task baru
-            Tasks newTask = new Tasks(title, category, deadline, description, false);
+            // 2. Buat objek Tasks (5 parameter sesuai model Tasks.java)
+            Tasks baru = new Tasks(title, category, deadline, description, false);
             
-            // 2. Simpan ke Database
-            TasksDAO.insertEntry(newTask, currentUser.getUser_id());
+            // 3. Simpan ke database melalui DAO 
+            // Diberi angka 1 sebagai userId default (sesuai signature di TasksDAO.java)
+            TasksDAO.insertEntry(baru, 1); 
             
-            // 3. Panggil method di Parent (ManageTaskController)
+            // 4. Update tampilan jika dibuka dari halaman ManageTask
             if (parentController != null) {
-                parentController.addTaskAndRefresh(newTask); // Sekarang tidak merah lagi
+                parentController.addTaskAndRefresh(baru);
             }
             
+            // 5. Feedback Sukses & Tutup Jendela
+            clearFields();
             showAlert(Alert.AlertType.INFORMATION, "Sukses", "Tugas berhasil ditambahkan!");
             
-            // 4. Kembali ke halaman list
-            handleGoToManageTask(event);
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "DB Error", "Gagal menyimpan task.");
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+
         } catch (Exception e) {
+            System.err.println("Error saat menambah tugas: " + e.getMessage());
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Gagal menyimpan. Pastikan kolom 'category' sudah ada di database.");
         }
     }
 
-    @FXML private void handleGoToTimer(ActionEvent event) throws IOException { navigate("/com/aplikasi/view/Timer.fxml", btnGoToTimer); }
-    @FXML private void handleGoToManageTask(ActionEvent event) throws IOException { navigate("/com/aplikasi/view/ManageTask.fxml", btnGoToManageTask); }
-    @FXML private void handleGoToReport(ActionEvent event) throws IOException { navigate("/com/aplikasi/view/TrackingView.fxml", btnGoToReport); }
-
-    private void navigate(String path, Button source) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.getScene().setRoot(loader.load());
-        
-        Object controller = loader.getController();
-        if (controller instanceof ManageTaskController) ((ManageTaskController) controller).initForUser(currentUser);
-        if (controller instanceof TimerController) ((TimerController) controller).initForUser(currentUser);
-        if (controller instanceof TrackingController) ((TrackingController) controller).initForUser(currentUser);
+    private void clearFields() {
+        txtTitle.clear();
+        cmbCategory.setValue("Academic");
+        datePickerDeadline.setValue(null);
+        txtDescription.clear();
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
@@ -107,5 +109,24 @@ public class AddTaskController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    // --- Navigasi Menu ---
+    @FXML
+    private void handleGoToTimer(ActionEvent event) throws IOException {
+        Stage stage = (Stage) btnGoToTimer.getScene().getWindow();
+        SceneManager.switchScene(stage, "/com/aplikasi/view/Timer.fxml");
+    }
+
+    @FXML
+    private void handleGoToManageTask(ActionEvent event) throws IOException {
+        Stage stage = (Stage) btnGoToManageTask.getScene().getWindow();
+        SceneManager.switchScene(stage, "/com/aplikasi/view/ManageTask.fxml");
+    }
+
+    @FXML
+    private void handleGoToReport(ActionEvent event) throws IOException {
+        Stage stage = (Stage) btnGoToReport.getScene().getWindow();
+        SceneManager.switchScene(stage, "/com/aplikasi/view/Report.fxml");
     }
 }
