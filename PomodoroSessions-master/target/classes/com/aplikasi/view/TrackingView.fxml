@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.TrackingController">
+
+    <left>
+        <VBox prefHeight="600.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #EFEFEF;" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="NAVIGATION" textFill="#666666">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" top="30.0" />
+                    </VBox.margin>
+                </Label>
+                <Button fx:id="btnGoToTimer" mnemonicParsing="false" onAction="#handleGoToTimer" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT;" text="Pomodoro Timer">
+                    <VBox.margin>
+                        <Insets left="10.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button fx:id="btnGoToManageTask" mnemonicParsing="false" onAction="#handleGoToManageTask" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-alignment: CENTER_LEFT;" text="Task Management">
+                    <VBox.margin>
+                        <Insets left="10.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #D3D3D3; -fx-alignment: CENTER_LEFT;" text="Report">
+                    <VBox.margin>
+                        <Insets left="10.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+            </children>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+            </padding>
+            <children>
+
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <children>
+                        <Label text="Reporting &amp; Statistics">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" />
+                        <HBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #F0F0F0; -fx-background-radius: 20;">
+                            <children>
+                                <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: gray;" text="Daily" />
+                                <Button mnemonicParsing="false" style="-fx-background-color: #4A90E2; -fx-text-fill: white; -fx-background-radius: 20;" text="Weekly" />
+                                <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: gray;" text="Monthly" />
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                            </padding>
+                        </HBox>
+                    </children>
+                </HBox>
+
+                <VBox style="-fx-border-color: #DDDDDD; -fx-border-radius: 10; -fx-background-radius: 10;">
+                    <children>
+                        <Label text="Total Focus Hours">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="20.0" top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <BarChart fx:id="productivityChart" legendVisible="false" prefHeight="300.0">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                    </children>
+                </VBox>
+
+                <Label text="Summary">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+
+                <HBox spacing="20.0">
+                    <children>
+                        <VBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #E3F2FD; -fx-background-radius: 10; -fx-padding: 15;">
+                            <children>
+                                <Label text="Total Sesi Selesai" textFill="#1565c0">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblTotalSessions" text="0" textFill="#1565c0">
+                                    <font>
+                                        <Font name="System Bold" size="36.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <VBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #E8F5E9; -fx-background-radius: 10; -fx-padding: 15;">
+                            <children>
+                                <Label text="Average Focus Time" textFill="#2e7d32">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblAvgFocus" text="0 Jam" textFill="#2e7d32">
+                                    <font>
+                                        <Font name="System Bold" size="36.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <VBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #FFF3E0; -fx-background-radius: 10; -fx-padding: 15;">
+                            <children>
+                                <Label text="Total Jam Fokus" textFill="#ef6c00">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblTotalHours" text="0 Jam" textFill="#ef6c00">
+                                    <font>
+                                        <Font name="System Bold" size="36.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
