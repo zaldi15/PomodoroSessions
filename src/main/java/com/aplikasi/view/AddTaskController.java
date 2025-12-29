@@ -2,6 +2,7 @@ package com.aplikasi.view;
 
 import com.aplikasi.dao.TasksDAO;
 import com.aplikasi.model.Tasks;
+import com.aplikasi.model.User;
 import com.aplikasi.util.SceneManager;
 import java.io.IOException;
 import java.net.URL;
@@ -22,18 +23,16 @@ import javafx.stage.Stage;
 /**
  * Controller untuk menambahkan tugas baru.
  */
-public class AddTasksController implements Initializable {
+public class AddTaskController implements Initializable {
 
     @FXML
     private TextArea txtDescription;
     @FXML
     private TextField txtTitle;
     @FXML
-    private DatePicker datePickerDeadline;
-    
+    private DatePicker datePickerDeadline;   
     @FXML
-    private ComboBox<String> cmbCategory; 
-    
+    private ComboBox<String> cmbCategory;    
     @FXML
     private Button btnGoToTimer;
     @FXML
@@ -42,6 +41,7 @@ public class AddTasksController implements Initializable {
     private Button btnGoToReport;
     
     private ManageTaskController parentController;
+    private User currentUser;
 
     public void setParentController(ManageTaskController manageController){
         this.parentController = manageController;
@@ -75,7 +75,7 @@ public class AddTasksController implements Initializable {
             
             // 3. Simpan ke database melalui DAO 
             // Diberi angka 1 sebagai userId default (sesuai signature di TasksDAO.java)
-            TasksDAO.insertEntry(baru, 1); 
+            TasksDAO.insertEntry(baru, currentUser.getUser_id()); 
             
             // 4. Update tampilan jika dibuka dari halaman ManageTask
             if (parentController != null) {
@@ -86,8 +86,7 @@ public class AddTasksController implements Initializable {
             clearFields();
             showAlert(Alert.AlertType.INFORMATION, "Sukses", "Tugas berhasil ditambahkan!");
             
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.close();
+            handleGoToManageTask(event);
 
         } catch (Exception e) {
             System.err.println("Error saat menambah tugas: " + e.getMessage());
@@ -129,4 +128,9 @@ public class AddTasksController implements Initializable {
         Stage stage = (Stage) btnGoToReport.getScene().getWindow();
         SceneManager.switchScene(stage, "/com/aplikasi/view/Report.fxml");
     }
+
+    public void initForUser(User user) {
+        this.currentUser = user;
+    }
+
 }
