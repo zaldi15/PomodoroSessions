@@ -82,6 +82,21 @@
                 
                 <!-- Spacer -->
                 <VBox VBox.vgrow="ALWAYS" />
+                <!-- Back to Menu Button -->
+                <Button fx:id="btnBackToMenu" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="50.0" style="-fx-background-color: #6EACDA;                                -fx-background-radius: 10;                                -fx-cursor: hand;" text="⬅️  Back to Menu" textFill="#021526">
+
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="10.0" right="10.0" />
+                    </VBox.margin>
+                </Button>
             </children>
         </VBox>
         
