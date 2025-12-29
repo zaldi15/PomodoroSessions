@@ -4,111 +4,209 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * Model untuk Tasks (Tugas)
  * Mewakili satu tugas dalam aplikasi Pomodoro
+ * UPDATED: Menambahkan fitur kategori task
  */
 public class Tasks {
     private int task_id;
     private int user_id;
     private String title;
     private String description;
-    private String category; // FIELD BARU
     private LocalDate deadline;
     private BooleanProperty completed;
     private LocalDateTime created_at;
+    private StringProperty category; // ✅ BARU: Kategori task
+    
+    // Enum untuk kategori yang tersedia
+    public enum TaskCategory {
+        ACADEMIC("Academic"),
+        PROJECT("Project"),
+        DEVELOPMENT("Development");
+        
+        private final String displayName;
+        
+        TaskCategory(String displayName) {
+            this.displayName = displayName;
+        }
+        
+        public String getDisplayName() {
+            return displayName;
+        }
+        
+        @Override
+        public String toString() {
+            return displayName;
+        }
+    }
     
     /**
      * Constructor untuk membuat task baru (sebelum disimpan ke database)
-     * Ditambahkan parameter category
+     * Digunakan saat user input task baru di AddTasksController
      */
     public Tasks(String title, String category, LocalDate deadline, String description, boolean completed) {
         this.title = title;
-        this.category = category; // SET CATEGORY
-        this.description = description;
+        this.category = new SimpleStringProperty(category != null ? category : "Academic"); // Default ke Academic
         this.deadline = deadline;
-        this.completed = new SimpleBooleanProperty(completed);
+        this.description = description;        
+        this.completed = new SimpleBooleanProperty(completed);        
         this.created_at = LocalDateTime.now();
     }
     
     /**
      * Constructor lengkap (setelah load dari database)
-     * Ditambahkan parameter category
+     * Digunakan saat load task dari database di TasksDAO
      */
     public Tasks(int task_id, int user_id, String title, String category, LocalDate deadline, 
                  String description, boolean completed, LocalDateTime created_at) {
         this.task_id = task_id;
         this.user_id = user_id;
         this.title = title;
-        this.category = category; // SET CATEGORY
-        this.description = description;
+        this.category = new SimpleStringProperty(category != null ? category : "Academic");
         this.deadline = deadline;
+        this.description = description;        
         this.completed = new SimpleBooleanProperty(completed);
         this.created_at = created_at;
     }
     
     // ==================== GETTERS ====================
     
-    public int getTask_id() { return task_id; }
+    public int getTask_id() {
+        return task_id;
+    }
     
-    public int getUser_id() { return user_id; }
+    public int getUser_id() {
+        return user_id;
+    }
     
-    public String getTitle() { return title; }
-
-    public String getCategory() { return category; } // GETTER BARU
+    public String getTitle() {
+        return title;
+    }
     
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
     
-    public LocalDate getDeadline() { return deadline; }
+    public LocalDate getDeadline() {
+        return deadline;
+    }
     
-    public boolean isCompleted() { return completed.get(); }
+    /**
+     * Getter untuk completed sebagai boolean
+     * Digunakan untuk operasi normal
+     */
+    public boolean isCompleted() {
+        return completed.get();
+    }
     
-    public BooleanProperty completedProperty() { return completed; }
+    /**
+     * Getter untuk completed sebagai Property
+     * PENTING: Digunakan oleh TableView dengan CheckBoxTableCell
+     */
+    public BooleanProperty completedProperty() {
+        return completed;
+    }
     
-    public LocalDateTime getCreated_at() { return created_at; }
+    public LocalDateTime getCreated_at() {
+        return created_at;
+    }
+    
+    /**
+     * ✅ BARU: Getter untuk category sebagai String
+     */
+    public String getCategory() {
+        return category.get();
+    }
+    
+    /**
+     * ✅ BARU: Getter untuk category sebagai Property
+     * Digunakan oleh TableView
+     */
+    public StringProperty categoryProperty() {
+        return category;
+    }
     
     // ==================== SETTERS ====================
     
-    public void setTask_id(int task_id) { this.task_id = task_id; }
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
+    }
     
-    public void setUser_id(int user_id) { this.user_id = user_id; }
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
     
-    public void setTitle(String title) { this.title = title; }
-
-    public void setCategory(String category) { this.category = category; } // SETTER BARU
+    public void setTitle(String title) {
+        this.title = title;
+    }
     
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
     
-    public void setDeadline(LocalDate deadline) { this.deadline = deadline; }
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = deadline;
+    }
     
-    public void setCompleted(boolean completed) { this.completed.set(completed); }
+    /**
+     * Setter untuk completed sebagai boolean
+     * Update nilai di property
+     */
+    public void setCompleted(boolean completed) {
+        this.completed.set(completed);
+    }
     
-    public void setCreated_at(LocalDateTime created_at) { this.created_at = created_at; }
+    public void setCreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
+    }
+    
+    /**
+     * ✅ BARU: Setter untuk category
+     */
+    public void setCategory(String category) {
+        this.category.set(category != null ? category : "Academic");
+    }
     
     // ==================== UTILITY METHODS ====================
     
     /**
-     * Override toString untuk display di ListView
-     * Sekarang menampilkan kategori juga: "Title [Category] - Deadline"
+     * Override toString untuk debugging dan display di ListView
+     * Format: "[Category] Title - Deadline"
      */
     @Override
     public String toString() {
-        return title + " [" + category + "] - " + deadline;
+        return "[" + category.get() + "] " + title + " - " + deadline;
     }
     
+    /**
+     * Cek apakah deadline sudah lewat
+     */
     public boolean isOverdue() {
         return !completed.get() && deadline.isBefore(LocalDate.now());
     }
     
+    /**
+     * Cek apakah deadline hari ini
+     */
     public boolean isDueToday() {
         return deadline.equals(LocalDate.now());
     }
     
+    /**
+     * Hitung sisa hari hingga deadline
+     * Negative jika sudah lewat
+     */
     public long getDaysUntilDeadline() {
         return LocalDate.now().until(deadline).getDays();
     }
     
+    /**
+     * Get status string untuk display
+     */
     public String getStatusText() {
         if (completed.get()) {
             return "✅ Completed";
@@ -119,6 +217,38 @@ public class Tasks {
         } else {
             long days = getDaysUntilDeadline();
             return "⏰ " + days + " day(s) left";
+        }
+    }
+    
+    /**
+     * ✅ BARU: Get icon berdasarkan kategori
+     */
+    public String getCategoryIcon() {
+        switch (category.get()) {
+            case "Academic":
+                return "📚";
+            case "Project":
+                return "🎯";
+            case "Development":
+                return "💻";
+            default:
+                return "📋";
+        }
+    }
+    
+    /**
+     * ✅ BARU: Get warna berdasarkan kategori (untuk styling)
+     */
+    public String getCategoryColor() {
+        switch (category.get()) {
+            case "Academic":
+                return "#4A90E2"; // Biru
+            case "Project":
+                return "#50C878"; // Hijau
+            case "Development":
+                return "#FF6B6B"; // Merah
+            default:
+                return "#95A5A6"; // Abu-abu
         }
     }
 }
