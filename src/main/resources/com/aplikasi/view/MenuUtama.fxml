@@ -7,6 +7,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #021526;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.MenuController">
     <children>
@@ -113,7 +117,7 @@
                         <!-- User Info Placeholder -->
                         <VBox alignment="CENTER_RIGHT" spacing="2.0">
                             <children>
-                                <Label text="Welcome back!" textFill="#6EACDA">
+                                <Label text="Welcome to Pomodo+" textFill="#6EACDA">
                                     <font>
                                         <Font size="12.0" />
                                     </font>
@@ -123,25 +127,36 @@
                     </children>
                 </HBox>
                 
-                <!-- Main Content -->
-                <VBox alignment="CENTER" layoutX="0.0" layoutY="80.0" prefHeight="520.0" prefWidth="750.0" spacing="30.0">
-                    <children>
-                        <!-- Welcome Message -->
-                        <VBox alignment="CENTER" spacing="15.0">
-                            <children>
-                                <Label text="Welcome to Pomodo+" textFill="#E2E2B6">
-                                    <font>
-                                        <Font name="System Bold" size="36.0" />
-                                    </font>
-                                </Label>
-                                <Label text="Your productivity companion for focused work sessions" textAlignment="CENTER" textFill="#6EACDA" wrapText="true">
-                                    <font>
-                                        <Font size="16.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                        </VBox>
-                    </children>
+                <!-- Content -->
+                <VBox layoutY="80" prefWidth="750" spacing="20">
+                    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+                    <!-- Leaderboard Card -->
+                    <VBox spacing="15" style="-fx-background-color:#03346E;                                  -fx-border-color:#6EACDA;                                  -fx-border-radius:12;                                  -fx-background-radius:12;">
+                        <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+                        <!-- Header Row -->
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label text="Leaderboard" textFill="#E2E2B6">
+                                <font><Font name="System Bold" size="18" /></font>
+                            </Label>
+
+                            <VBox HBox.hgrow="ALWAYS" />
+
+                            <ComboBox fx:id="cbFilterLeaderboard" prefWidth="180" promptText="Filter Leaderboard" style="-fx-background-color:#021526;                                              -fx-border-color:#6EACDA;                                              -fx-border-radius:10;                                              -fx-background-radius:10;                                              -fx-text-fill:#E2E2B6;" />
+                        </HBox>
+
+                        <!-- Table -->
+                        <TableView fx:id="leaderboardTable" prefHeight="300" style="-fx-background-color:transparent;                                           -fx-control-inner-background:#021526;">
+                            <columns>
+                                <TableColumn fx:id="colUsername" prefWidth="200" text="Username" />
+                                <TableColumn fx:id="colSessions" prefWidth="160" text="Total Sessions" />
+                                <TableColumn fx:id="colHours" prefWidth="160" text="Focus Hours" />
+                                <TableColumn fx:id="colCompleted" prefWidth="160" text="Completed Tasks" />
+                            </columns>
+                        </TableView>
+
+                    </VBox>
                 </VBox>
             </children>
         </AnchorPane>
