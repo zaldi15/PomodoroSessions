@@ -1,9 +1,12 @@
 package com.aplikasi.dao;
 
+import com.aplikasi.model.Leaderboard;
 import com.aplikasi.model.TrackingProductivity;
 import com.aplikasi.util.DBConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrackingDAO {
 
@@ -112,5 +115,69 @@ public static double[] getMonthlyFocus(int userId) throws SQLException {
             }
         }
         return null;
+    }
+    
+    public enum LeaderboardSort {
+    HOURS("Focus Hours"),
+    SESSIONS("Total Sessions"),
+    COMPLETED("Completed Tasks");
+    
+    private final String label;
+    
+    LeaderboardSort(String label){
+        this.label = label;
+    }
+    
+    @Override
+    public String toString(){
+        return label;
+    }
+}
+
+    
+    public static List<Leaderboard> getLeaderboard(LeaderboardSort sort) throws SQLException {
+
+        List<Leaderboard> list = new ArrayList<>();
+        
+        String orderBy = switch (sort) {
+        case SESSIONS -> "totalSessions DESC";
+        case HOURS -> "totalFocusHours DESC";
+        case COMPLETED -> "completed DESC";
+        default -> "totalSessions DESC, totalFocusHours DESC, completed DESC";
+    };
+
+        String sql = """
+            SELECT
+                u.username,
+                COALESCE(tp.total_sessions, 0) AS totalSessions,
+                COALESCE(tp.total_focus_hours, 0) AS totalFocusHours,
+                COUNT(t.task_id) AS completed
+            FROM users u
+            LEFT JOIN tracking_productivity tp
+                ON tp.user_id = u.user_id
+            LEFT JOIN tasks t
+                ON t.user_id = u.user_id
+                AND t.completed = 1
+            GROUP BY u.username, tp.total_sessions, tp.total_focus_hours
+            ORDER BY %s
+            LIMIT 10
+        """.formatted(orderBy);
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Leaderboard lb = new Leaderboard(
+                        rs.getString("username"),
+                        rs.getInt("totalSessions"),
+                        rs.getDouble("totalFocusHours"),
+                        rs.getInt("completed")
+                );
+                list.add(lb);
+            }
+        }
+
+        return list;
     }
 }
