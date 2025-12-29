@@ -15,10 +15,12 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 
 public class TrackingController implements Initializable {
@@ -27,6 +29,7 @@ public class TrackingController implements Initializable {
     @FXML private Button btnGoToTimer;
     @FXML private Button btnGoToManageTask;
     @FXML private Button btnGoToReport;
+    @FXML private Button btnBackToMenu;
 
     @FXML private BarChart<String, Number> productivityChart;
 
@@ -166,6 +169,38 @@ public class TrackingController implements Initializable {
     @FXML
     private void handleGoToReport(ActionEvent event) {
         System.out.println("Already in Report");
+    }
+    
+    @FXML
+    private void handleBackToMenu(ActionEvent event) {
+        try {
+            URL fxmlLocation = getClass().getResource("/com/aplikasi/view/MenuUtama.fxml");
+            
+            if (fxmlLocation == null) {
+                System.err.println("❌ FXML Error: MenuUtama.fxml tidak ditemukan!");
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
+            Parent root = loader.load(); 
+            
+            Object controller = loader.getController();
+            if (controller != null) {
+                try {
+                    Method m = controller.getClass().getMethod("initForUser", User.class);
+                    m.invoke(controller, currentUser);
+                } catch (Exception e) {
+                    System.out.println("ℹ️ Controller tujuan tidak memiliki method initForUser");
+                }
+            }
+            
+            Stage stage = (Stage) btnBackToMenu.getScene().getWindow();
+            stage.getScene().setRoot(root);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Gagal kembali ke menu utama");
+        }
     }
     
     public void initForUser(User user) {
