@@ -17,13 +17,17 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import javafx.event.ActionEvent;
+import javafx.scene.Parent;
 
 public class TimerController {
 
     @FXML private Label labelTimer, labelTask;
-    @FXML private Button btnStart, btnPause, btnReset, btnLogout;
+    @FXML private Button btnStart, btnPause, btnReset, btnBackToMenu;
     @FXML private ListView<Tasks> taskListView;
     @FXML private Spinner<Integer> spinnerMinutes, spinnerBreak;
 
@@ -156,14 +160,34 @@ public class TimerController {
     }
 
     @FXML
-    private void handleLogout() {
+    private void handleBackToMenu(ActionEvent event) {
         try {
-            if (timeline != null) timeline.stop();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/aplikasi/view/Login.fxml"));
-            Stage stage = (Stage) btnLogout.getScene().getWindow();
-            stage.getScene().setRoot(loader.load());
+            URL fxmlLocation = getClass().getResource("/com/aplikasi/view/MenuUtama.fxml");
+            
+            if (fxmlLocation == null) {
+                System.err.println("❌ FXML Error: MenuUtama.fxml tidak ditemukan!");
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(fxmlLocation);
+            Parent root = loader.load(); 
+            
+            Object controller = loader.getController();
+            if (controller != null) {
+                try {
+                    Method m = controller.getClass().getMethod("initForUser", User.class);
+                    m.invoke(controller, currentUser);
+                } catch (Exception e) {
+                    System.out.println("ℹ️ Controller tujuan tidak memiliki method initForUser");
+                }
+            }
+            
+            Stage stage = (Stage) btnBackToMenu.getScene().getWindow();
+            stage.getScene().setRoot(root);
+            
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert("Error", "Gagal kembali ke menu utama");
         }
     }
 
