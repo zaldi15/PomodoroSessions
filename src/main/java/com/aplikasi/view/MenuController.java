@@ -1,16 +1,26 @@
 package com.aplikasi.view;
 
+import com.aplikasi.dao.TrackingDAO;
+import com.aplikasi.dao.TrackingDAO.LeaderboardSort;
+import com.aplikasi.model.Leaderboard;
 import com.aplikasi.model.User;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -29,12 +39,64 @@ public class MenuController implements Initializable {
     @FXML private Button btnTimer;
     @FXML private Button btnReport;
     @FXML private Button btnLogout;
+    @FXML private TableView<Leaderboard> leaderboardTable;
+    @FXML private TableColumn<Leaderboard, String> colUsername;
+    @FXML private TableColumn<Leaderboard, Integer> colSessions;
+    @FXML private TableColumn<Leaderboard, Double> colHours;
+    @FXML private TableColumn<Leaderboard, Integer> colCompleted; // ⬅️ BARU
+    @FXML private ComboBox<LeaderboardSort> cbFilterLeaderboard;
+
+    private final ObservableList<Leaderboard> leaderboardData =
+            FXCollections.observableArrayList();
     
     private User currentUser;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialization awal (sebelum user login)
+        
+        setupLeaderboardFilter();
+        loadLeaderboard(LeaderboardSort.SESSIONS);
+        
+        colUsername.setCellValueFactory(
+                new PropertyValueFactory<>("username"));
+
+        colSessions.setCellValueFactory(
+                new PropertyValueFactory<>("totalSessions"));
+
+        colHours.setCellValueFactory(
+                new PropertyValueFactory<>("totalFocusHours"));
+
+        colCompleted.setCellValueFactory(
+                new PropertyValueFactory<>("completed"));
+
+        leaderboardTable.setColumnResizePolicy(
+                TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+    
+
+    private void loadLeaderboard(LeaderboardSort sort ) {
+        try {
+            leaderboardData.setAll(TrackingDAO.getLeaderboard(sort));
+            leaderboardTable.setItems(leaderboardData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void setupLeaderboardFilter() {
+        if (cbFilterLeaderboard != null) {
+            cbFilterLeaderboard.getItems().setAll(
+            LeaderboardSort.SESSIONS,
+            LeaderboardSort.HOURS,
+            LeaderboardSort.COMPLETED);
+            
+            cbFilterLeaderboard.setValue(LeaderboardSort.SESSIONS);
+            
+            cbFilterLeaderboard.setOnAction(event -> {
+                LeaderboardSort selected = cbFilterLeaderboard.getValue();
+                loadLeaderboard(selected);
+            });
+        }
     }
     
     /**
