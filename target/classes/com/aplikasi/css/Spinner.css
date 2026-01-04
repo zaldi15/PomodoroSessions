@@ -1,0 +1,282 @@
+/* ========================================
+   MODERN SPINNER STYLING
+   Ultra Modern, Colorful, Eye-catching
+   ======================================== */
+
+/* ==================== SPINNER BASE ==================== */
+
+.spinner {
+    -fx-background-color: linear-gradient(to bottom, 
+        rgba(23, 133, 130, 0.2) 0%, 
+        rgba(10, 24, 40, 0.9) 100%);
+    -fx-border-color: #178582;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-width: 2;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.4), 8, 0, 0, 2);
+}
+
+.spinner:focused {
+    -fx-border-color: #BFA181;
+    -fx-effect: dropshadow(gaussian, rgba(191, 161, 129, 0.8), 12, 0, 0, 3);
+}
+
+/* ==================== SPINNER TEXT FIELD ==================== */
+
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #EEEEEE;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-padding: 8 15 8 15;
+    -fx-prompt-text-fill: rgba(191, 161, 129, 0.5);
+    -fx-effect: dropshadow(gaussian, rgba(23, 133, 130, 0.4), 3, 0, 0, 1);
+}
+
+.spinner:focused .text-field {
+    -fx-text-fill: #BFA181;
+    -fx-effect: dropshadow(gaussian, rgba(191, 161, 129, 0.8), 5, 0, 0, 2);
+}
+
+/* ==================== SPINNER BUTTONS ==================== */
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: linear-gradient(135deg, 
+        #178582 0%, 
+        #126663 100%);
+    -fx-background-radius: 0 10 10 0;
+    -fx-padding: 8 12 8 12;
+    -fx-cursor: hand;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-radius: 10 0 0 10;
+}
+
+/* Button hover effect */
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: linear-gradient(135deg, 
+        #1F9592 0%, 
+        #1A7673 100%);
+    -fx-effect: dropshadow(gaussian, rgba(23, 133, 130, 0.8), 8, 0, 0, 2);
+}
+
+/* Button pressed effect */
+.spinner .increment-arrow-button:pressed,
+.spinner .decrement-arrow-button:pressed {
+    -fx-background-color: linear-gradient(135deg, 
+        #BFA181 0%, 
+        #A88F71 100%);
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2);
+}
+
+/* ==================== SPINNER ARROWS ==================== */
+
+.spinner .increment-arrow-button .increment-arrow {
+    -fx-background-color: #EEEEEE;
+    -fx-shape: "M 0 4 L 4 0 L 8 4 Z";
+    -fx-padding: 4;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 2, 0, 0, 1);
+}
+
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: #EEEEEE;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z";
+    -fx-padding: 4;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 2, 0, 0, 1);
+}
+
+/* Arrow hover */
+.spinner .increment-arrow-button:hover .increment-arrow,
+.spinner .decrement-arrow-button:hover .decrement-arrow {
+    -fx-background-color: #BFA181;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+/* ==================== FOCUS DURATION SPINNER (GREEN) ==================== */
+
+.spinner-focus {
+    -fx-background-color: linear-gradient(to bottom, 
+        rgba(61, 220, 132, 0.15) 0%, 
+        rgba(10, 24, 40, 0.9) 100%);
+    -fx-border-color: #3DDC84;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(61, 220, 132, 0.4), 10, 0, 0, 2);
+}
+
+.spinner-focus:focused {
+    -fx-border-color: #3DDC84;
+    -fx-effect: dropshadow(gaussian, rgba(61, 220, 132, 0.8), 15, 0, 0, 3);
+}
+
+.spinner-focus .text-field {
+    -fx-text-fill: #3DDC84;
+    -fx-effect: dropshadow(gaussian, rgba(61, 220, 132, 0.6), 5, 0, 0, 2);
+}
+
+.spinner-focus .increment-arrow-button,
+.spinner-focus .decrement-arrow-button {
+    -fx-background-color: linear-gradient(135deg, 
+        #3DDC84 0%, 
+        #2EBD6C 100%);
+}
+
+.spinner-focus .increment-arrow-button:hover,
+.spinner-focus .decrement-arrow-button:hover {
+    -fx-background-color: linear-gradient(135deg, 
+        #4DEC94 0%, 
+        #3ECD7C 100%);
+    -fx-effect: dropshadow(gaussian, rgba(61, 220, 132, 0.8), 10, 0, 0, 2);
+}
+
+/* ==================== BREAK DURATION SPINNER (ORANGE) ==================== */
+
+.spinner-break {
+    -fx-background-color: linear-gradient(to bottom, 
+        rgba(255, 159, 28, 0.15) 0%, 
+        rgba(10, 24, 40, 0.9) 100%);
+    -fx-border-color: #FF9F1C;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(255, 159, 28, 0.4), 10, 0, 0, 2);
+}
+
+.spinner-break:focused {
+    -fx-border-color: #FF9F1C;
+    -fx-effect: dropshadow(gaussian, rgba(255, 159, 28, 0.8), 15, 0, 0, 3);
+}
+
+.spinner-break .text-field {
+    -fx-text-fill: #FF9F1C;
+    -fx-effect: dropshadow(gaussian, rgba(255, 159, 28, 0.6), 5, 0, 0, 2);
+}
+
+.spinner-break .increment-arrow-button,
+.spinner-break .decrement-arrow-button {
+    -fx-background-color: linear-gradient(135deg, 
+        #FF9F1C 0%, 
+        #E88A15 100%);
+}
+
+.spinner-break .increment-arrow-button:hover,
+.spinner-break .decrement-arrow-button:hover {
+    -fx-background-color: linear-gradient(135deg, 
+        #FFAF3C 0%, 
+        #F89A25 100%);
+    -fx-effect: dropshadow(gaussian, rgba(255, 159, 28, 0.8), 10, 0, 0, 2);
+}
+
+/* ==================== ALTERNATIVE: CIRCULAR SPINNER ==================== */
+
+.spinner-circular {
+    -fx-background-color: radial-gradient(center 50% 50%, radius 60%, 
+        rgba(23, 133, 130, 0.3) 0%, 
+        rgba(10, 24, 40, 0.9) 100%);
+    -fx-border-color: linear-gradient(to bottom, #178582 0%, #BFA181 100%);
+    -fx-border-radius: 50%;
+    -fx-background-radius: 50%;
+    -fx-border-width: 3;
+    -fx-pref-width: 120;
+    -fx-pref-height: 120;
+    -fx-effect: dropshadow(gaussian, rgba(23, 133, 130, 0.6), 15, 0, 0, 0);
+}
+
+.spinner-circular .text-field {
+    -fx-font-size: 28px;
+    -fx-text-fill: #BFA181;
+    -fx-effect: dropshadow(gaussian, rgba(191, 161, 129, 0.8), 8, 0, 0, 0);
+}
+
+/* ==================== GLASS MORPHISM SPINNER ==================== */
+
+.spinner-glass {
+    -fx-background-color: rgba(23, 133, 130, 0.15);
+    -fx-border-color: rgba(191, 161, 129, 0.5);
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3);
+    -fx-backdrop-filter: blur(10px);
+}
+
+.spinner-glass .text-field {
+    -fx-text-fill: #EEEEEE;
+    -fx-font-size: 22px;
+    -fx-font-weight: 900;
+}
+
+.spinner-glass .increment-arrow-button,
+.spinner-glass .decrement-arrow-button {
+    -fx-background-color: rgba(191, 161, 129, 0.3);
+}
+
+.spinner-glass .increment-arrow-button:hover,
+.spinner-glass .decrement-arrow-button:hover {
+    -fx-background-color: rgba(191, 161, 129, 0.5);
+}
+
+/* ==================== NEON GLOW SPINNER ==================== */
+
+.spinner-neon {
+    -fx-background-color: #0A1828;
+    -fx-border-color: #3DDC84;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-width: 3;
+    -fx-effect: 
+        dropshadow(gaussian, rgba(61, 220, 132, 1.0), 20, 0, 0, 0),
+        innershadow(gaussian, rgba(61, 220, 132, 0.5), 10, 0, 0, 0);
+}
+
+.spinner-neon .text-field {
+    -fx-text-fill: #3DDC84;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(61, 220, 132, 1.0), 15, 0, 0, 0);
+}
+
+.spinner-neon .increment-arrow-button,
+.spinner-neon .decrement-arrow-button {
+    -fx-background-color: rgba(61, 220, 132, 0.3);
+}
+
+.spinner-neon .increment-arrow-button:hover,
+.spinner-neon .decrement-arrow-button:hover {
+    -fx-background-color: rgba(61, 220, 132, 0.6);
+    -fx-effect: dropshadow(gaussian, rgba(61, 220, 132, 1.0), 15, 0, 0, 0);
+}
+
+/* ==================== PREMIUM GRADIENT SPINNER ==================== */
+
+.spinner-premium {
+    -fx-background-color: 
+        linear-gradient(135deg, 
+            rgba(23, 133, 130, 0.3) 0%, 
+            rgba(191, 161, 129, 0.3) 50%,
+            rgba(123, 104, 238, 0.3) 100%);
+    -fx-border-color: linear-gradient(to right, #178582 0%, #BFA181 50%, #7B68EE 100%);
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-border-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0, 0, 4);
+}
+
+.spinner-premium .text-field {
+    -fx-text-fill: linear-gradient(to right, #178582 0%, #BFA181 50%, #7B68EE 100%);
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.spinner-premium .increment-arrow-button,
+.spinner-premium .decrement-arrow-button {
+    -fx-background-color: linear-gradient(135deg, 
+        rgba(191, 161, 129, 0.6) 0%, 
+        rgba(123, 104, 238, 0.6) 100%);
+}
