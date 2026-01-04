@@ -1,5 +1,7 @@
 # Pomodoro+
 Aplikasi Manajemen Waktu Produktif Berbasis Desktop dengan Metode Pomodoro
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/10d5ab35-5688-4968-a36a-e973ad04b5f5" />
+
 ## Pengenalan
 Dibuat oleh Kelompok 1 Kelas 3B:
 - Haidar Yahya
