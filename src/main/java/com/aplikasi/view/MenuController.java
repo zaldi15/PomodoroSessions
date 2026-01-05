@@ -25,15 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-/**
- * Controller untuk Main Menu (Menu Utama)
- * Hub untuk navigasi ke semua fitur aplikasi
- * 
- * KONSEP PENTING:
- * - Controller ini menerima User dari LoginController
- * - Setiap navigasi ke fitur lain akan melewatkan User tersebut
- * - Semua controller fitur harus memiliki method initForUser(User user)
- */
+
 public class MenuController implements Initializable {
 
     @FXML private Label lblWelcome;
@@ -105,13 +97,7 @@ public class MenuController implements Initializable {
                 loadLeaderboard(selected);
             });
         }
-    }
-    /**
-     * PENTING: Method ini WAJIB dipanggil dari LoginController
-     * untuk menginisialisasi menu dengan user yang sedang login
-     * 
-     * @param user User yang berhasil login
-     */
+  
     public void initForUser(User user) {
         this.currentUser = user;
         
@@ -306,4 +292,5 @@ private void handleReport(ActionEvent event) {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }
