@@ -7,11 +7,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-/**
- * Model untuk Tasks (Tugas)
- * Mewakili satu tugas dalam aplikasi Pomodoro
- * UPDATED: Menambahkan fitur kategori task
- */
+
 public class Tasks {
     private int task_id;
     private int user_id;
@@ -22,7 +18,7 @@ public class Tasks {
     private LocalDateTime created_at;
     private StringProperty category; // ✅ BARU: Kategori task
     
-    // Enum untuk kategori yang tersedia
+   
     public enum TaskCategory {
         ACADEMIC("Academic"),
         PROJECT("Project"),
@@ -44,10 +40,7 @@ public class Tasks {
         }
     }
     
-    /**
-     * Constructor untuk membuat task baru (sebelum disimpan ke database)
-     * Digunakan saat user input task baru di AddTasksController
-     */
+   
     public Tasks(String title, LocalDate deadline, String description, boolean completed, String category) {
         this.title = title;
         this.description = description;
@@ -57,10 +50,7 @@ public class Tasks {
         this.created_at = LocalDateTime.now();
     }
     
-    /**
-     * Constructor lengkap (setelah load dari database)
-     * Digunakan saat load task dari database di TasksDAO
-     */
+   
     public Tasks(int task_id, int user_id, String title, LocalDate deadline, 
                  String description, boolean completed, LocalDateTime created_at, String category) {
         this.task_id = task_id;
@@ -95,18 +85,12 @@ public class Tasks {
         return deadline;
     }
     
-    /**
-     * Getter untuk completed sebagai boolean
-     * Digunakan untuk operasi normal
-     */
+  
     public boolean isCompleted() {
         return completed.get();
     }
     
-    /**
-     * Getter untuk completed sebagai Property
-     * PENTING: Digunakan oleh TableView dengan CheckBoxTableCell
-     */
+   
     public BooleanProperty completedProperty() {
         return completed;
     }
@@ -115,17 +99,12 @@ public class Tasks {
         return created_at;
     }
     
-    /**
-     * ✅ BARU: Getter untuk category sebagai String
-     */
+   
     public String getCategory() {
         return category.get();
     }
     
-    /**
-     * ✅ BARU: Getter untuk category sebagai Property
-     * Digunakan oleh TableView
-     */
+   
     public StringProperty categoryProperty() {
         return category;
     }
@@ -152,10 +131,7 @@ public class Tasks {
         this.deadline = deadline;
     }
     
-    /**
-     * Setter untuk completed sebagai boolean
-     * Update nilai di property
-     */
+   
     public void setCompleted(boolean completed) {
         this.completed.set(completed);
     }
@@ -164,9 +140,7 @@ public class Tasks {
         this.created_at = created_at;
     }
     
-    /**
-     * ✅ BARU: Setter untuk category
-     */
+   
     public void setCategory(String category) {
         this.category.set(category != null ? category : "Academic");
     }
@@ -220,9 +194,7 @@ public class Tasks {
         }
     }
     
-    /**
-     * ✅ BARU: Get icon berdasarkan kategori
-     */
+   
     public String getCategoryIcon() {
         switch (category.get()) {
             case "Academic":
@@ -236,9 +208,7 @@ public class Tasks {
         }
     }
     
-    /**
-     * ✅ BARU: Get warna berdasarkan kategori (untuk styling)
-     */
+   
     public String getCategoryColor() {
         switch (category.get()) {
             case "Academic":
@@ -252,3 +222,4 @@ public class Tasks {
         }
     }
 }
+
