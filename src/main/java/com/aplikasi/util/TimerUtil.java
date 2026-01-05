@@ -18,19 +18,14 @@ public class TimerUtil {
         this.userId = userId;
     }
 
-    /**
-     * FUNGSI 1: Format Detik ke MM:SS
-     */
+   
     public static String formatTime(int seconds) {
         int min = seconds / 60;
         int sec = seconds % 60;
         return String.format("%02d:%02d", min, sec);
     }
 
-    /**
-     * FUNGSI 2: Pengingat Deadline Saat Login
-     * Panggil ini tepat setelah proses Login berhasil.
-     */
+  
     public static void showLoginDeadlineAlert(int userId) {
         // Query untuk mencari tugas yang deadline-nya 0-3 hari lagi
         String sql = "SELECT title, DATEDIFF(deadline, CURDATE()) as sisa_hari " +
@@ -126,4 +121,5 @@ public class TimerUtil {
     public void stopTimer() {
         if (timeline != null) timeline.stop();
     }
+
 }
