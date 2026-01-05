@@ -11,16 +11,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Data Access Object untuk Tasks
- * Menangani semua operasi database untuk tugas
- * UPDATED: Menambahkan support untuk kategori task
- */
+
 public class TasksDAO {
     
-    /**
-     * ✅ UPDATED: Insert task baru ke database dengan user_id dan kategori
-     */
+    
     public static void insertEntry(Tasks tasks, int userId) throws SQLException {
         String SQL = "INSERT INTO tasks (user_id, title, deadline, description, completed, created_at, category) VALUES (?, ?, ?, ?, ?, ?, ?)";
         
@@ -48,9 +42,7 @@ public class TasksDAO {
         } 
     }
     
-    /**
-     * ✅ UPDATED: Ambil semua task milik user tertentu dengan kategori
-     */
+ 
     public static List<Tasks> getAllTasksByUser(int userId) throws SQLException {
         List<Tasks> dataTasks = new ArrayList<>();
         String SQL = "SELECT task_id, user_id, title, deadline, description, completed, created_at, category FROM tasks WHERE user_id = ? ORDER BY deadline ASC";
@@ -71,7 +63,7 @@ public class TasksDAO {
                         rs.getString("description"),
                         rs.getBoolean("completed"),
                         rs.getTimestamp("created_at").toLocalDateTime(),
-                        rs.getString("category") // ✅ BARU: Load kategori
+                        rs.getString("category") 
                     );
                     dataTasks.add(task);
                 }
@@ -80,9 +72,7 @@ public class TasksDAO {
         return dataTasks;
     }
 
-    /**
-     * ✅ UPDATED: Update task yang sudah ada termasuk kategori
-     */
+    
     public static void updateEntry(Tasks updateTasks) throws SQLException {
         String SQL = "UPDATE tasks SET title=?, deadline=?, description=?, completed=?, category=? WHERE task_id=?";
         
@@ -93,16 +83,14 @@ public class TasksDAO {
             stmt.setDate(2, Date.valueOf(updateTasks.getDeadline()));
             stmt.setString(3, updateTasks.getDescription());
             stmt.setBoolean(4, updateTasks.isCompleted());
-            stmt.setString(5, updateTasks.getCategory()); // ✅ BARU: Update kategori
+            stmt.setString(5, updateTasks.getCategory()); 
             stmt.setInt(6, updateTasks.getTask_id()); 
             
             stmt.executeUpdate();
         }
     }
     
-    /**
-     * ✅ BARU: Ambil task berdasarkan kategori tertentu
-     */
+   
     public static List<Tasks> getTasksByCategory(int userId, String category) throws SQLException {
         List<Tasks> dataTasks = new ArrayList<>();
         String SQL = "SELECT task_id, user_id, title, deadline, description, completed, created_at, category FROM tasks WHERE user_id = ? AND category = ? ORDER BY deadline ASC";
@@ -132,9 +120,7 @@ public class TasksDAO {
         return dataTasks;
     }
     
-    /**
-     * ✅ BARU: Hitung jumlah task per kategori untuk user tertentu
-     */
+  
     public static int getTaskCountByCategory(int userId, String category) throws SQLException {
         String SQL = "SELECT COUNT(*) as count FROM tasks WHERE user_id = ? AND category = ?";
         
@@ -152,10 +138,7 @@ public class TasksDAO {
         }
         return 0;
     }
-    
-    /**
-     * ✅ BARU: Hitung jumlah completed task per kategori
-     */
+
     public static int getCompletedTaskCountByCategory(int userId, String category) throws SQLException {
         String SQL = "SELECT COUNT(*) as count FROM tasks WHERE user_id = ? AND category = ? AND completed = true";
         
@@ -203,9 +186,7 @@ public class TasksDAO {
         }
     }
     
-    /**
-     * ✅ UPDATED: Ambil task berdasarkan ID dengan kategori
-     */
+  
     public static Tasks getTaskById(int taskId) throws SQLException {
         String SQL = "SELECT task_id, user_id, title, deadline, description, completed, created_at, category FROM tasks WHERE task_id = ?";
         
@@ -224,11 +205,12 @@ public class TasksDAO {
                         rs.getString("description"),
                         rs.getBoolean("completed"),
                         rs.getTimestamp("created_at").toLocalDateTime(),
-                        rs.getString("category") // ✅ BARU: Load kategori
+                        rs.getString("category") 
                     );
                 }
             }
         }
         return null;
     }
+
 }
