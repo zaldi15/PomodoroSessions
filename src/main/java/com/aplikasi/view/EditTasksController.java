@@ -21,11 +21,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-/**
- * Controller untuk Edit Task
- * Mengedit tugas yang sudah ada
- * UPDATED: Menambahkan ComboBox untuk mengubah kategori
- */
+
 public class EditTasksController implements Initializable {
 
     @FXML private TextArea txtDescription;
@@ -55,9 +51,7 @@ public class EditTasksController implements Initializable {
         }
     }
     
-    /**
-     * ✅ BARU: Update style ComboBox berdasarkan kategori yang dipilih
-     */
+   
     private void updateCategoryStyle() {
         if (cbCategory == null) return;
         
@@ -87,9 +81,7 @@ public class EditTasksController implements Initializable {
         System.out.println("➡ EditTask: User = " + currentUser.getUsername());
     }
     
-    /**
-     * ✅ UPDATED: Set task yang akan diedit dan isi field dengan data task termasuk kategori
-     */
+   
     public void setTask(Tasks task) {
         this.taskToEdit = task;
         if (task != null) {
@@ -97,7 +89,7 @@ public class EditTasksController implements Initializable {
             datePickerDeadline.setValue(task.getDeadline());
             txtDescription.setText(task.getDescription());
             
-            // ✅ BARU: Set kategori yang sesuai
+           
             if (cbCategory != null) {
                 cbCategory.setValue(task.getCategory());
                 updateCategoryStyle();
@@ -107,9 +99,7 @@ public class EditTasksController implements Initializable {
         }
     }
     
-    /**
-     * Set parent controller untuk callback setelah update
-     */
+    
     public void setParentController(ManageTaskController manageController) {
         this.parentController = manageController;
     }
@@ -129,14 +119,14 @@ public class EditTasksController implements Initializable {
         String newTitle = txtTitle.getText().trim();
         LocalDate newDeadline = datePickerDeadline.getValue();
         String newDescription = txtDescription.getText().trim();
-        String newCategory = cbCategory.getValue(); // ✅ BARU: Ambil kategori baru
+        String newCategory = cbCategory.getValue(); 
         
         if (newTitle.isEmpty() || newDeadline == null || newDescription.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Input Error", "Semua field harus terisi");
             return;
         }
         
-        // ✅ BARU: Validasi kategori
+      
         if (newCategory == null || newCategory.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Input Error", "Kategori harus dipilih");
             return;
@@ -151,7 +141,7 @@ public class EditTasksController implements Initializable {
             taskToEdit.setTitle(newTitle);
             taskToEdit.setDeadline(newDeadline);
             taskToEdit.setDescription(newDescription);
-            taskToEdit.setCategory(newCategory); // ✅ BARU: Update kategori
+            taskToEdit.setCategory(newCategory); 
 
             TasksDAO.updateEntry(taskToEdit);
             
@@ -209,7 +199,7 @@ public class EditTasksController implements Initializable {
                 ((TimerController) controller).initForUser(currentUser);
             } else if (controller instanceof TrackingController) {
                 ((TrackingController) controller).initForUser(currentUser);
-            } else if (controller instanceof ReportController) {   // 👈 tambahkan ini
+            } else if (controller instanceof ReportController) {  
             ((ReportController) controller).initForUser(currentUser);
         }
             
@@ -227,4 +217,5 @@ public class EditTasksController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }
