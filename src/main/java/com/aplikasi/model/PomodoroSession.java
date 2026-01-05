@@ -2,10 +2,7 @@ package com.aplikasi.model;
 
 import java.time.LocalDateTime;
 
-/**
- * Model untuk Pomodoro Session
- * Merepresentasikan satu sesi fokus/break dalam database
- */
+
 public class PomodoroSession {
     // Field menggunakan snake_case (sesuai nama kolom database)
     private int session_id;
@@ -17,13 +14,7 @@ public class PomodoroSession {
     private int total_sessions;
     private boolean completed;
 
-    /**
-     * Constructor untuk membuat session baru (sebelum disimpan ke database)
-     * @param user_id ID user
-     * @param start_time Waktu mulai sesi
-     * @param focus_duration Durasi fokus (menit)
-     * @param break_duration Durasi break (menit)
-     */
+   
     public PomodoroSession(int user_id, LocalDateTime start_time, int focus_duration, int break_duration) {
         this.user_id = user_id;
         this.start_time = start_time;
@@ -33,10 +24,7 @@ public class PomodoroSession {
         this.completed = false;   // Default: belum selesai
     }
 
-    /**
-     * Constructor untuk membaca session dari database (8 parameter)
-     * Digunakan oleh DAO saat SELECT dari database
-     */
+   
     public PomodoroSession(int session_id, int user_id, LocalDateTime start_time, LocalDateTime end_time,
                            int focus_duration, int break_duration, int total_sessions, boolean completed) {
         this.session_id = session_id;
@@ -49,8 +37,7 @@ public class PomodoroSession {
         this.completed = completed;
     }
 
-    // ==== GETTER & SETTER ====
-    // Getter/Setter menggunakan camelCase (standar Java Bean)
+   
     
     public int getSessionId() { 
         return session_id; 
@@ -129,4 +116,5 @@ public class PomodoroSession {
                 ", completed=" + completed +
                 '}';
     }
+
 }
