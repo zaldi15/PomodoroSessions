@@ -3,10 +3,7 @@ package com.aplikasi.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Model untuk User
- * Mewakili pengguna aplikasi Pomodoro dengan dukungan Role (Admin/User)
- */
+
 public class User {
     private int user_id;
     private String username;
@@ -15,10 +12,7 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime lastLogin;
     
-    /**
-     * Constructor lengkap (dari database)
-     * Digunakan saat load user dari database (UserDAO loginUser & getAllUsers)
-     */
+    
     public User(int user_id, String username, String email, String role, 
                 LocalDateTime createdAt, LocalDateTime lastLogin) {
         this.user_id = user_id;
@@ -29,10 +23,7 @@ public class User {
         this.lastLogin = lastLogin;
     }
     
-    /**
-     * Constructor untuk registrasi user baru
-     * Default role diatur sebagai 'user'
-     */
+   
     public User(String username, String email) {
         this.username = username;
         this.email = email;
@@ -131,4 +122,5 @@ public class User {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
         return lastLogin.format(formatter);
     }
+
 }
