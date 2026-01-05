@@ -16,7 +16,7 @@ public class Tasks {
     private LocalDate deadline;
     private BooleanProperty completed;
     private LocalDateTime created_at;
-    private StringProperty category; // ✅ BARU: Kategori task
+    private StringProperty category; 
     
    
     public enum TaskCategory {
@@ -222,4 +222,5 @@ public class Tasks {
         }
     }
 }
+
 
