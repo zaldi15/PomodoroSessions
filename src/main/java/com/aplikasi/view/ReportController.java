@@ -34,10 +34,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- * Controller untuk Report dengan Task History
- * UPDATED: Menambahkan fitur untuk melihat history task yang diselesaikan
- */
+
 public class ReportController implements Initializable {
 
     // ==================== CHART COMPONENTS ====================
@@ -131,10 +128,7 @@ public void initForUser(User user) {
     loadCategoryChart();
 }
 
-    
-    /**
-     * ✅ BARU: Setup table untuk task history
-     */
+   
     private void setupTaskHistoryTable() {
         if (tvTaskHistory == null) return;
         
@@ -197,7 +191,7 @@ public void initForUser(User user) {
             };
         });
         
-        // ✅ Custom cell untuk description dengan truncate
+        
         colDescription.setCellFactory(column -> {
             return new TableCell<CompletedTaskInfo, String>() {
                 @Override
@@ -227,9 +221,7 @@ public void initForUser(User user) {
         tvTaskHistory.setItems(taskHistoryData);
     }
     
-    /**
-     * ✅ BARU: Load available months untuk dropdown filter
-     */
+   
     private void loadAvailableMonths() {
         if (cbMonthFilter == null || currentUser == null) return;
         
@@ -245,7 +237,7 @@ public void initForUser(User user) {
                 parseSelectedMonth(months.get(0));
             }
             
-            // Set listener untuk perubahan bulan
+           
             cbMonthFilter.setOnAction(e -> {
                 String selected = cbMonthFilter.getValue();
                 if (selected != null) {
@@ -262,9 +254,7 @@ public void initForUser(User user) {
         }
     }
     
-    /**
-     * ✅ BARU: Parse selected month string to month and year
-     */
+    
     private void parseSelectedMonth(String monthYear) {
         // Format: "January 2024"
         String[] parts = monthYear.split(" ");
@@ -290,9 +280,7 @@ public void initForUser(User user) {
         }
     }
     
-    /**
-     * ✅ BARU: Load task history untuk bulan yang dipilih
-     */
+    
     private void loadTaskHistory() {
         if (currentUser == null) return;
         
@@ -312,9 +300,7 @@ public void initForUser(User user) {
         }
     }
     
-    /**
-     * ✅ BARU: Filter task history berdasarkan kategori
-     */
+    
     private void filterTaskHistory() {
         if (currentUser == null || cbCategoryFilter == null) return;
         
@@ -342,9 +328,7 @@ public void initForUser(User user) {
         }
     }
     
-    /**
-     * ✅ FIXED: Load summary statistics dengan total tasks yang benar
-     */
+    
     private void loadSummaryStatistics() {
         
         if (currentUser == null) return;
@@ -358,29 +342,29 @@ public void initForUser(User user) {
             ReportDAO.insertReport(report);
             System.out.println("✔ Report snapshot inserted");
 
-            // ✅ Get ALL tasks untuk user (completed + uncompleted)
+           
             List<Tasks> allTasks = TasksDAO.getAllTasksByUser(currentUser.getUser_id());
             int totalTasks = allTasks.size();
             int completedTasks = (int) allTasks.stream().filter(Tasks::isCompleted).count();
             
-            // ✅ Total Tasks = SEMUA task (completed + uncompleted)
+           
             if (lblTotalTasks != null) {
                 lblTotalTasks.setText(String.valueOf(totalTasks));
             }
 
-            // ✅ Completed Tasks
+           
             if (lblCompletedTasks != null) {
                 lblCompletedTasks.setText(String.valueOf(completedTasks));
             }
 
-            // ✅ Average Focus Hours
+           
             if (lblAverageFocus != null) {
                 lblAverageFocus.setText(
                     String.format("%.2f", report.getAverageFocusHours())
                 );
             }
 
-            // ✅ Total Sessions dari tracking productivity
+            
             if (lblTotalSessions != null) {
                 lblTotalSessions.setText(
                 String.valueOf(TrackingDAO.getTotalSessions(currentUser.getUser_id()))
@@ -597,4 +581,5 @@ public void initForUser(User user) {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }
