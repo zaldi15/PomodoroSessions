@@ -32,9 +32,7 @@ public class MainClass extends Application {
             FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("/com/aplikasi/view/AdminDashboard.fxml"));
             Parent root = loader.load();
 
-            // Opsional: Jika Anda membuat AdminController, Anda bisa mengirim data user ke sana
-            // com.aplikasi.controller.AdminController controller = loader.getController();
-            // controller.initData(user);
+           
 
             mainStage.setScene(new Scene(root));
             mainStage.setTitle("Pomodoro - Admin Panel [" + user.getUsername() + "]");
@@ -48,7 +46,7 @@ public class MainClass extends Application {
         }
     }
 
-    // ✅ METHOD INI DIPANGGIL SETELAH LOGIN BERHASIL
+   
     public static void openMenuUtama(User user) {
         try {
             FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("/com/aplikasi/view/MenuUtama.fxml"));
@@ -86,7 +84,7 @@ public class MainClass extends Application {
         }
     }
 
-    /** jika masih butuh register */
+ 
     public static void openRegisterPage() {
         try {
             FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("/com/aplikasi/view/Register.fxml"));
@@ -101,4 +99,5 @@ public class MainClass extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
