@@ -8,19 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TrackingDAO - VERSI A
- * 
- * REQUIREMENT: Database harus punya struktur:
- * - PRIMARY KEY (tracking_id) AUTO_INCREMENT
- * - UNIQUE KEY (user_id, task_id)
- * 
- * SQL untuk fix database:
- * 
- * ALTER TABLE tracking_productivity DROP PRIMARY KEY;
- * ALTER TABLE tracking_productivity MODIFY tracking_id INT AUTO_INCREMENT PRIMARY KEY;
- * ALTER TABLE tracking_productivity ADD UNIQUE KEY unique_user_task (user_id, task_id);
- */
+
 public class TrackingDAO {
 
    public static void updateSession(
@@ -58,7 +46,7 @@ public class TrackingDAO {
             ResultSet rs = checkPs.executeQuery();
 
             if (rs.next()) {
-                // ✅ UPDATE - task ini sudah ada tracking
+              
                 try (PreparedStatement updatePs = conn.prepareStatement(updateSql)) {
                     updatePs.setInt(1, sessionInc);
                     updatePs.setDouble(2, hoursInc);
@@ -70,7 +58,7 @@ public class TrackingDAO {
                                      ", Sessions: +" + sessionInc + ", Hours: +" + hoursInc);
                 }
             } else {
-                // ✅ INSERT - task baru untuk user ini
+               
                 try (PreparedStatement insertPs = conn.prepareStatement(insertSql)) {
                     insertPs.setInt(1, userId);
                     insertPs.setInt(2, taskId);
@@ -251,5 +239,6 @@ public class TrackingDAO {
 
         return 0; // default jika belum ada data
     }
+
 
 }
