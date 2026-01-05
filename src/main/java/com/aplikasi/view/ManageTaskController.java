@@ -34,11 +34,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-/**
- * Controller untuk Manage Task
- * Menampilkan daftar tugas user dan operasi CRUD
- * UPDATED: Modern styling dengan kategori, filter, dan SEARCH
- */
+
 public class ManageTaskController implements Initializable {
 
     @FXML private TableColumn<Tasks, String> colTitle;
@@ -57,7 +53,7 @@ public class ManageTaskController implements Initializable {
     @FXML private ComboBox<String> cbFilterCategory;
     @FXML private Label lblTaskCount;
     
-    // ✅ BARU: Search components
+  
     @FXML private TextField txtSearch;
     @FXML private Button btnSearch;
     @FXML private Button btnClearSearch;
@@ -155,9 +151,7 @@ public class ManageTaskController implements Initializable {
         loadModernStyling();
     }
     
-    /**
-     * ✅ BARU: Setup search functionality
-     */
+   
     private void setupSearchFunctionality() {
         // Search saat user mengetik (real-time)
         if (txtSearch != null) {
@@ -180,9 +174,7 @@ public class ManageTaskController implements Initializable {
         }
     }
     
-    /**
-     * ✅ BARU: Perform search berdasarkan keyword
-     */
+   
     private void performSearch(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             // Jika search kosong, tampilkan semua (dengan filter kategori jika ada)
@@ -223,9 +215,7 @@ public class ManageTaskController implements Initializable {
         System.out.println("🔍 Search: '" + keyword + "' - Found " + searchResults.size() + " tasks");
     }
     
-    /**
-     * ✅ BARU: Clear search dan tampilkan semua task
-     */
+    
     private void clearSearch() {
         if (txtSearch != null) {
             txtSearch.clear();
@@ -234,9 +224,7 @@ public class ManageTaskController implements Initializable {
         System.out.println("🔄 Search cleared");
     }
     
-    /**
-     * ✅ BARU: Apply filters (category + search)
-     */
+  
     private void applyFilters() {
         String selectedCategory = cbFilterCategory != null ? cbFilterCategory.getValue() : "All";
         String searchKeyword = txtSearch != null ? txtSearch.getText() : "";
@@ -255,9 +243,7 @@ public class ManageTaskController implements Initializable {
         updateTaskCounter();
     }
     
-    /**
-     * ✅ BARU: Load CSS styling untuk table modern
-     */
+    
     private void loadModernStyling() {
         try {
             String css = getClass().getResource("/com/aplikasi/css/Table.css").toExternalForm();
@@ -267,9 +253,7 @@ public class ManageTaskController implements Initializable {
         }
     }
     
-    /**
-     * ✅ MODERN: Custom cell factory untuk kategori dengan badge
-     */
+   
     private void setupModernCategoryColumn() {
         colCategory.setCellFactory(column -> {
             return new TableCell<Tasks, String>() {
@@ -309,9 +293,7 @@ public class ManageTaskController implements Initializable {
         });
     }
     
-    /**
-     * ✅ MODERN: Custom cell factory untuk deadline dengan color coding
-     */
+    
     private void setupModernDeadlineColumn() {
         colDeadline.setCellFactory(column -> {
             return new TableCell<Tasks, LocalDate>() {
@@ -353,9 +335,7 @@ public class ManageTaskController implements Initializable {
         });
     }
     
-    /**
-     * ✅ MODERN: Custom cell factory untuk description dengan truncate
-     */
+ 
     private void setupModernDescriptionColumn() {
         colDescription.setCellFactory(column -> {
             return new TableCell<Tasks, String>() {
@@ -388,9 +368,7 @@ public class ManageTaskController implements Initializable {
         });
     }
     
-    /**
-     * ✅ MODERN: Setup action column dengan styled buttons
-     */
+   
     private void setupModernActionColumn() {
         Callback<TableColumn<Tasks, Void>, TableCell<Tasks, Void>> cellFactory = param -> {
             return new TableCell<>() {
@@ -725,3 +703,4 @@ public class ManageTaskController implements Initializable {
         alert.showAndWait();
     }
 }
+
