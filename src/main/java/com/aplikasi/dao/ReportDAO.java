@@ -9,17 +9,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * FINAL ReportDAO
- * ✔ Compatible dengan struktur DB
- * ✔ Tanpa SQL error
- * ✔ Siap produksi / UAS
- */
 public class ReportDAO {
 
-    // ==================================================
-    // SNAPSHOT REPORT
-    // ==================================================
+    
     public static void insertReport(Report report) throws SQLException {
         String sql = """
             INSERT INTO report (
@@ -42,9 +34,6 @@ public class ReportDAO {
         
     }
 
-    // ==================================================
-    // DATA AGREGASI CHART
-    // ==================================================
    public static List<Report> getDailyReportsByMonth(int userId, int month, int year) throws SQLException {
     List<Report> list = new ArrayList<>();
     String sql = """
@@ -77,9 +66,7 @@ public class ReportDAO {
     return list;
 }
 
-// ==================================================
-// 2. DATA WEEKLY (Mingguan dalam 1 Bulan)
-// ==================================================
+
 public static List<Report> getWeeklyReportsByMonth(int userId, int month, int year) throws SQLException {
     List<Report> list = new ArrayList<>();
     String sql = """
@@ -112,9 +99,7 @@ public static List<Report> getWeeklyReportsByMonth(int userId, int month, int ye
     return list;
 }
 
-// ==================================================
-// 3. DATA MONTHLY (Bulanan dalam 1 Tahun)
-// ==================================================
+
 public static List<Report> getMonthlyReportsByYear(int userId, int year) throws SQLException {
     List<Report> list = new ArrayList<>();
     String sql = """
@@ -145,9 +130,7 @@ public static List<Report> getMonthlyReportsByYear(int userId, int year) throws 
     return list;
 }
 
-    // ==================================================
-    // COMPLETED TASK HISTORY
-    // ==================================================
+  
     public static List<CompletedTaskInfo> getCompletedTasksHistory(
             int userId, int month, int year) throws SQLException {
 
@@ -190,9 +173,7 @@ public static List<Report> getMonthlyReportsByYear(int userId, int year) throws 
         return tasks;
     }
 
-    // ==================================================
-    // MONTHLY REPORT + TASK DETAIL
-    // ==================================================
+   
     public static Report getMonthlyReportWithTasks(int userId, int month, int year) throws SQLException {
         Report report = new Report();
 
@@ -233,9 +214,7 @@ public static List<Report> getMonthlyReportsByYear(int userId, int year) throws 
         return report;
     }
 
-    // ==================================================
-    // AVAILABLE MONTHS
-    // ==================================================
+   
     public static List<String> getAvailableMonths(int userId) throws SQLException {
         List<String> months = new ArrayList<>();
 
@@ -268,9 +247,7 @@ public static List<Report> getMonthlyReportsByYear(int userId, int year) throws 
         return months;
     }
 
-    // ==================================================
-    // CATEGORY STATISTICS
-    // ==================================================
+   
     public static List<CategoryStats> getCategoryStatsForMonth(
             int userId, int month, int year) throws SQLException {
 
@@ -310,9 +287,7 @@ public static List<Report> getMonthlyReportsByYear(int userId, int year) throws 
         return stats;
     }
 
-    // ==================================================
-    // INNER CLASS
-    // ==================================================
+  
     public static class CategoryStats {
         private String category;
         private int taskCount;
@@ -323,3 +298,4 @@ public static List<Report> getMonthlyReportsByYear(int userId, int year) throws 
         public double getTotalFocusHours() { return totalFocusHours; }
     }
 }
+
