@@ -137,7 +137,7 @@ public class AdminController {
     // --- LOGIKA DATA ---
 
     private void loadMissionsData() {
-        // PERBAIKAN: Tambah tanda kurung () dan gunakan nama method yang ada di MissionsDAO
+     
         tvMissions.setItems(FXCollections.observableArrayList(missionsDAO.getAllMissionsAdmin()));
     }
 
@@ -217,7 +217,7 @@ public class AdminController {
 
     @FXML
     private void handleLogout() {
-        // Pastikan MainClass memiliki method static openLoginPage()
+       
         MainClass.openLoginPage(); 
     }
 
@@ -239,4 +239,5 @@ public class AdminController {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
     }
+
 }
