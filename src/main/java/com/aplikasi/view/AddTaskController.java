@@ -21,17 +21,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-/**
- * Controller untuk Add Task
- * Menambahkan tugas baru untuk user yang sedang login
- * UPDATED: Menambahkan ComboBox untuk memilih kategori
- */
+
 public class AddTaskController implements Initializable {
 
     @FXML private TextArea txtDescription;
     @FXML private TextField txtTitle;
     @FXML private DatePicker datePickerDeadline;
-    @FXML private ComboBox<String> cbCategory; // ✅ BARU: ComboBox untuk kategori
+    @FXML private ComboBox<String> cbCategory;
     @FXML private Button btnGoToTimer;
     @FXML private Button btnGoToManageTask;
     @FXML private Button btnTracking;
@@ -43,12 +39,12 @@ public class AddTaskController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // ✅ BARU: Inisialisasi ComboBox kategori
+        
         if (cbCategory != null) {
             cbCategory.getItems().addAll("Academic", "Project", "Development");
             cbCategory.setValue("Academic"); // Default ke Academic
             
-            // ✅ BARU: Style untuk ComboBox berdasarkan pilihan
+           
             cbCategory.setOnAction(event -> {
                 updateCategoryStyle();
             });
@@ -56,10 +52,7 @@ public class AddTaskController implements Initializable {
             updateCategoryStyle();
         }
     }
-    
-    /**
-     * ✅ BARU: Update style ComboBox berdasarkan kategori yang dipilih
-     */
+  
     private void updateCategoryStyle() {
         if (cbCategory == null) return;
         
@@ -89,9 +82,7 @@ public class AddTaskController implements Initializable {
         System.out.println("➡ AddTask: User = " + currentUser.getUsername());
     }
     
-    /**
-     * Set parent controller untuk callback setelah save
-     */
+   
     public void setParentController(ManageTaskController manageController) {
         this.parentController = manageController;
     }
@@ -106,7 +97,7 @@ public class AddTaskController implements Initializable {
         String title = txtTitle.getText().trim();
         LocalDate deadline = datePickerDeadline.getValue();
         String description = txtDescription.getText().trim();
-        String category = cbCategory.getValue(); // ✅ BARU: Ambil kategori yang dipilih
+        String category = cbCategory.getValue(); 
 
         // Validasi input
         if (title.isEmpty() || deadline == null || description.isEmpty()) {
@@ -114,7 +105,7 @@ public class AddTaskController implements Initializable {
             return;
         }
         
-        // ✅ BARU: Validasi kategori
+        
         if (category == null || category.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Input Error", "Kategori harus dipilih");
             return;
@@ -127,7 +118,7 @@ public class AddTaskController implements Initializable {
         }
         
         try {
-            // ✅ UPDATED: Buat task baru dengan kategori
+            
             Tasks newTask = new Tasks(title, deadline, description, false, category);
             
             // Simpan ke database dengan user_id
@@ -193,7 +184,7 @@ public class AddTaskController implements Initializable {
                 ((TimerController) controller).initForUser(currentUser);
             } else if (controller instanceof TrackingController) {
                 ((TrackingController) controller).initForUser(currentUser);
-            } else if (controller instanceof ReportController) {   // 👈 tambahkan ini
+            } else if (controller instanceof ReportController) {   
             ((ReportController) controller).initForUser(currentUser);
         }
             
@@ -204,9 +195,7 @@ public class AddTaskController implements Initializable {
         }
     }
     
-    /**
-     * ✅ UPDATED: Bersihkan semua field input termasuk kategori
-     */
+   
     private void clearFields() {
         txtTitle.clear();
         datePickerDeadline.setValue(null);
@@ -222,4 +211,5 @@ public class AddTaskController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }
