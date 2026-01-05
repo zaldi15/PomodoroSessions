@@ -22,10 +22,7 @@ import java.time.LocalDateTime;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
-/**
- * Controller untuk Timer (Pomodoro)
- * Menjalankan sesi Pomodoro dengan task yang dipilih
- */
+
 public class TimerController {
     
     @FXML private Label labelTimer;
@@ -55,10 +52,7 @@ public class TimerController {
     private Tasks currentTask;  // Task yang sedang aktif dikerjakan
     private com.aplikasi.model.Missions targetMission;  // Misi yang sedang dikerjakan
     
-    /**
-     * Set target mission dari MissionsController
-     * Method ini dipanggil ketika user memulai misi
-     */
+    
     public void setTargetMission(com.aplikasi.model.Missions mission) {
         this.targetMission = mission;
         if (mission != null) {
@@ -432,4 +426,5 @@ public class TimerController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }
