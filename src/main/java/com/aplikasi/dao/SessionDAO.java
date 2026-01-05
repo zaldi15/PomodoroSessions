@@ -11,20 +11,10 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-/**
- * Data Access Object untuk PomodoroSession
- * Menangani semua operasi database untuk tabel pomodoro_sessions
- */
+
 public class SessionDAO {
 
-    // =============================================================
-    // INSERT SESSION
-    // =============================================================
-    /**
-     * Menyimpan session baru ke database
-     * @param session Object PomodoroSession yang akan disimpan
-     * @return true jika berhasil, false jika gagal
-     */
+    
     public static boolean insertSession(PomodoroSession session) {
         // Kolom yang di-insert: user_id, start_time, end_time, focus_duration, break_duration, total_sessions, completed
         // session_id tidak di-insert karena AUTO_INCREMENT
@@ -67,14 +57,7 @@ public class SessionDAO {
         }
     }
 
-    // =============================================================
-    // GET SEMUA SESSION USER
-    // =============================================================
-    /**
-     * Mengambil semua session milik user tertentu, diurutkan dari yang terbaru
-     * @param userId ID user
-     * @return List of PomodoroSession
-     */
+    
     public static List<PomodoroSession> getSessionsByUser(int userId) {
         List<PomodoroSession> list = new ArrayList<>();
 
@@ -109,15 +92,7 @@ public class SessionDAO {
         return list;
     }
 
-    // =============================================================
-    // STATISTIK QUERY
-    // =============================================================
-
-    /**
-     * Menghitung total menit fokus user
-     * @param userId ID user
-     * @return Total menit fokus
-     */
+   
     public static int getTotalFocusMinutes(int userId) {
         String sql = "SELECT SUM(focus_duration) AS total FROM pomodoro_sessions WHERE user_id = ?";
 
@@ -138,11 +113,7 @@ public class SessionDAO {
         return 0;
     }
 
-    /**
-     * Menghitung total menit break user
-     * @param userId ID user
-     * @return Total menit break
-     */
+  
     public static int getTotalBreakMinutes(int userId) {
         String sql = "SELECT SUM(break_duration) AS total FROM pomodoro_sessions WHERE user_id = ?";
 
@@ -163,11 +134,7 @@ public class SessionDAO {
         return 0;
     }
 
-    /**
-     * Menghitung total sesi yang completed (sesi fokus yang selesai)
-     * @param userId ID user
-     * @return Total completed sessions
-     */
+  
     public static int getTotalCompletedSessions(int userId) {
         String sql = "SELECT COUNT(*) AS total FROM pomodoro_sessions WHERE user_id = ? AND completed = 1";
 
@@ -188,11 +155,7 @@ public class SessionDAO {
         return 0;
     }
 
-    /**
-     * Menghitung total sessions (SUM dari kolom total_sessions)
-     * @param userId ID user
-     * @return Total sessions
-     */
+    
     public static int getTotalSessions(int userId) {
         String sql = "SELECT SUM(total_sessions) AS total FROM pomodoro_sessions WHERE user_id = ?";
 
@@ -213,11 +176,7 @@ public class SessionDAO {
         return 0;
     }
     
-    /**
-     * Menghitung jumlah record session (COUNT bukan SUM)
-     * @param userId ID user
-     * @return Jumlah record
-     */
+   
     public static int getSessionRecordCount(int userId) {
         String sql = "SELECT COUNT(*) AS total FROM pomodoro_sessions WHERE user_id = ?";
 
@@ -238,12 +197,7 @@ public class SessionDAO {
         return 0;
     }
 
-    /**
-     * Update session tertentu (misalnya set completed = true)
-     * @param sessionId ID session
-     * @param completed Status completed
-     * @return true jika berhasil
-     */
+  
     public static boolean updateSessionCompleted(int sessionId, boolean completed) {
         String sql = "UPDATE pomodoro_sessions SET completed = ? WHERE session_id = ?";
 
@@ -262,11 +216,7 @@ public class SessionDAO {
         }
     }
 
-    /**
-     * Hapus session berdasarkan ID
-     * @param sessionId ID session yang akan dihapus
-     * @return true jika berhasil
-     */
+   
     public static boolean deleteSession(int sessionId) {
         String sql = "DELETE FROM pomodoro_sessions WHERE session_id = ?";
 
@@ -284,10 +234,7 @@ public class SessionDAO {
     }
     
     
-    /**
- * Statistik kategori global (digunakan untuk PieChart)
- * Mengelompokkan total menit fokus berdasarkan kategori
- */
+  
 public static Map<String, Double> getGlobalCategoryStats() {
     Map<String, Double> stats = new HashMap<>();
 
@@ -312,5 +259,6 @@ public static Map<String, Double> getGlobalCategoryStats() {
 
     return stats;
 }
+
 
 }
