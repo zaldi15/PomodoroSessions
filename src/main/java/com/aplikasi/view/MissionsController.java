@@ -77,9 +77,7 @@ public class MissionsController {
         }
     }
 
-    /**
-     * LOGIKA UTAMA: Klik tombol -> Update DB -> Pindah ke Timer
-     */
+   
     @FXML
     private void handleActionButton(ActionEvent event) {
         Missions selected = tableMissions.getSelectionModel().getSelectedItem();
@@ -114,9 +112,7 @@ public class MissionsController {
         }
     }
     
-    /**
-     * Handler untuk tombol Back to Menu
-     */
+   
     @FXML
     private void handleBackToMenu(ActionEvent event) {
         try {
@@ -149,4 +145,5 @@ public class MissionsController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }
