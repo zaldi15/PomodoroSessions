@@ -9,7 +9,6 @@ import com.aplikasi.util.DBConnection;
 public class ReminderDAO {
     public List<String> checkDeadlines(int userId) {
         List<String> listPesan = new ArrayList<>();
-        // Query: Mencari tugas yang sisa waktunya 0-3 hari lagi
         String sql = "SELECT title, DATEDIFF(deadline, CURDATE()) as sisa " +
                      "FROM tasks WHERE user_id = ? AND deadline >= CURDATE() " +
                      "HAVING sisa <= 3";
@@ -29,4 +28,5 @@ public class ReminderDAO {
         }
         return listPesan;
     }
+
 }
