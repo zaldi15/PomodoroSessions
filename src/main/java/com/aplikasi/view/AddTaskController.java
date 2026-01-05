@@ -111,7 +111,7 @@ public class AddTaskController implements Initializable {
             return;
         }
         
-        // Validasi deadline tidak boleh di masa lalu
+        
         if (deadline.isBefore(LocalDate.now())) {
             showAlert(Alert.AlertType.WARNING, "Input Error", "Deadline tidak boleh di masa lalu");
             return;
@@ -124,7 +124,7 @@ public class AddTaskController implements Initializable {
             // Simpan ke database dengan user_id
             TasksDAO.insertEntry(newTask, currentUser.getId());
             
-            // Refresh parent controller jika ada
+           
             if (parentController != null) {
                 parentController.addTaskAndRefresh(newTask);
             }
@@ -132,7 +132,7 @@ public class AddTaskController implements Initializable {
             clearFields();
             showAlert(Alert.AlertType.INFORMATION, "Sukses", "Tugas berhasil ditambahkan");
             
-            // Kembali ke ManageTask
+            
             handleGoToManageTask(event);
             
         } catch (SQLException e) {
@@ -213,3 +213,4 @@ public class AddTaskController implements Initializable {
     }
 
 }
+
