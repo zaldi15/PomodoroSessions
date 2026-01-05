@@ -10,12 +10,12 @@ import java.util.List;
 
 public class UserDAO {
 
-    // Helper untuk konversi SQL Timestamp ke Java LocalDateTime
+  
     private LocalDateTime convertTimestampToLocalDateTime(Timestamp timestamp) {
         return (timestamp != null) ? timestamp.toLocalDateTime() : null;
     }
 
-    // 1. REGISTRASI USER (Default role adalah 'user')
+   
     public boolean registerUser(String username, String password, String email) {
         String hashedPassword = PasswordUtil.hashPassword(password);
         String sql = "INSERT INTO users (username, password, email, role, created_at) VALUES (?, ?, ?, 'user', NOW())";
@@ -67,7 +67,7 @@ public class UserDAO {
         return null;
     }
 
-    // 3. MENGAMBIL SEMUA USER (Urutan berdasarkan pendaftaran terbaru)
+   
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         // Mengambil semua kecuali admin sendiri bisa menjadi pilihan, 
@@ -87,7 +87,7 @@ public class UserDAO {
         return userList;
     }
 
-    // 4. PENCARIAN USER (Berdasarkan Username atau Email)
+    
     public List<User> searchUsers(String keyword) {
         List<User> userList = new ArrayList<>();
         String sql = "SELECT * FROM users WHERE role = 'user' AND (username LIKE ? OR email LIKE ?)";
@@ -157,4 +157,5 @@ public class UserDAO {
             convertTimestampToLocalDateTime(rs.getTimestamp("last_login"))
         );
     }
+
 }
