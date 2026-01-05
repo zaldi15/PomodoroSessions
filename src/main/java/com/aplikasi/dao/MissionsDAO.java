@@ -8,13 +8,7 @@ import java.util.List;
 
 public class MissionsDAO {
 
-    // ==========================================================
-    // 1. FUNGSI ADMIN: CRUD Dasar (Tabel 'missions')
-    // ==========================================================
-
-    /** * Mengambil semua misi dari master tabel missions.
-     * Biasanya digunakan untuk Dashboard Admin.
-     */
+  
     public List<Missions> getAllMissionsAdmin() {
         List<Missions> missionList = new ArrayList<>();
         String query = "SELECT id_mission, title, description, target_date FROM missions ORDER BY id_mission DESC";
@@ -40,7 +34,7 @@ public class MissionsDAO {
         return missionList;
     }
 
-    /** Menambah misi baru (Admin) */
+    
     public boolean insertMission(String title, String desc, String targetDate) {
         String query = "INSERT INTO missions (title, description, target_date) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
@@ -57,7 +51,7 @@ public class MissionsDAO {
         }
     }
 
-    /** Memperbarui data misi (Admin) */
+   
     public boolean updateMission(int idMission, String title, String desc, String targetDate) {
         String query = "UPDATE missions SET title = ?, description = ?, target_date = ? WHERE id_mission = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -75,7 +69,7 @@ public class MissionsDAO {
         }
     }
 
-    /** Menghapus misi (Admin) */
+ 
     public boolean deleteMission(int idMission) {
         String query = "DELETE FROM missions WHERE id_mission = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -89,13 +83,7 @@ public class MissionsDAO {
         }
     }
 
-    // ==========================================================
-    // 2. FUNGSI USER: Relasi & Progress (Tabel 'user_missions')
-    // ==========================================================
-
-    /** * Mengambil daftar misi khusus untuk user tertentu.
-     * Menggunakan LEFT JOIN agar misi yang belum diambil tetap muncul sebagai 'Available'.
-     */
+  
     public List<Missions> getMissionsForUser(int userId) {
         List<Missions> list = new ArrayList<>();
         // Query ini menggabungkan tabel missions dengan tabel progress user_missions
@@ -127,7 +115,7 @@ public class MissionsDAO {
         return list;
     }
 
-    /** Mengubah status misi menjadi 'In Progress' */
+ 
     public boolean startMission(int userId, int idMission) {
         // Menggunakan ON DUPLICATE KEY agar tidak error jika user klik tombol berulang kali
         String query = "INSERT INTO user_missions (user_id, id_mission, status) VALUES (?, ?, 'In Progress') " +
@@ -145,7 +133,7 @@ public class MissionsDAO {
         }
     }
 
-    /** Mengubah status misi menjadi 'Completed' */
+  
     public boolean completeMission(int userId, int idMission) {
         String query = "UPDATE user_missions SET status = 'Completed', completed_at = NOW() " +
                        "WHERE user_id = ? AND id_mission = ?";
@@ -161,4 +149,5 @@ public class MissionsDAO {
             return false;
         }
     }
+
 }
