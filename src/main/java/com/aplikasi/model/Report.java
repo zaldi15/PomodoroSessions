@@ -4,10 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Model untuk Report
- * UPDATED: Menambahkan support untuk task completion history
- */
+
 public class Report {
     private int reportId;
     private int userId;
@@ -28,11 +25,11 @@ public class Report {
     
     
     
-    // ✅ BARU: Fields untuk task completion history
+   
     private List<CompletedTaskInfo> completedTasksList;
     private String periodType; // "DAILY", "WEEKLY", "MONTHLY"
     
-    // ✅ BARU: Inner class untuk menyimpan info task yang selesai
+   
     public static class CompletedTaskInfo {
         private int taskId;
         private String taskTitle;
@@ -141,9 +138,7 @@ public class Report {
     
     // ==================== UTILITY METHODS ====================
     
-    /**
-     * ✅ BARU: Get period description for display
-     */
+    
     public String getPeriodDescription() {
         if (startDate == null) return "N/A";
         
@@ -154,18 +149,15 @@ public class Report {
         }
     }
     
-    /**
-     * ✅ BARU: Get formatted focus hours
-     */
+   
     public String getFormattedFocusHours() {
         return String.format("%.2f hours", averageFocusHours);
     }
     
-    /**
-     * ✅ BARU: Calculate completion rate (if total tasks known)
-     */
+   
     public double getCompletionRate(int totalTasks) {
         if (totalTasks == 0) return 0.0;
         return (completedTasks * 100.0) / totalTasks;
     }
+
 }
