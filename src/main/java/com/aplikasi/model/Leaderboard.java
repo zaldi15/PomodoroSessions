@@ -5,7 +5,7 @@ public class Leaderboard {
     private String username;
     private int totalSessions;
     private double totalFocusHours;
-    private int completed;   // ⬅️ jumlah task completed
+    private int completed;   
 
     public Leaderboard(String username, int totalSessions,
                             double totalFocusHours, int completed) {
@@ -29,7 +29,7 @@ public class Leaderboard {
         return totalFocusHours;
     }
 
-    // ⬇️ PENTING: nama getter = completed
+ 
     public int getCompleted() {
         return completed;
     }
@@ -52,3 +52,4 @@ public class Leaderboard {
         this.completed = completed;
     }
 }
+
