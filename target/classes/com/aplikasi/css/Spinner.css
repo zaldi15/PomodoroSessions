@@ -1,0 +1,107 @@
+/* ========================================
+   MODERN SPINNER STYLING - FIXED VERSION
+   ======================================== */
+
+/* ==================== SPINNER BASE ==================== */
+.spinner {
+    /* Gunakan kombinasi warna solid/hex untuk stabilitas gradient */
+    -fx-background-color: linear-gradient(to bottom, #114B4A, #0A1828);
+    -fx-border-color: #178582;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-width: 2;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.4), 8, 0, 0, 2);
+}
+
+.spinner:focused {
+    -fx-border-color: #BFA181;
+    -fx-effect: dropshadow(gaussian, rgba(191, 161, 129, 0.8), 12, 0, 0, 3);
+}
+
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #EEEEEE;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-padding: 8 15 8 15;
+}
+
+/* ==================== SPINNER BUTTONS ==================== */
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: linear-gradient(to bottom right, #178582, #126663);
+    -fx-background-radius: 0 10 10 0;
+    -fx-padding: 8 12 8 12;
+    -fx-cursor: hand;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-radius: 10 0 0 10;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #1F9592;
+}
+
+/* ==================== FOCUS DURATION SPINNER (GREEN) ==================== */
+.spinner-focus {
+    -fx-background-color: linear-gradient(to bottom, #1A3E2A, #0A1828);
+    -fx-border-color: #3DDC84;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-width: 3;
+}
+
+.spinner-focus .text-field {
+    -fx-text-fill: #3DDC84;
+}
+
+.spinner-focus .increment-arrow-button,
+.spinner-focus .decrement-arrow-button {
+    -fx-background-color: #3DDC84;
+}
+
+/* ==================== BREAK DURATION SPINNER (ORANGE) ==================== */
+.spinner-break {
+    -fx-background-color: linear-gradient(to bottom, #462C0B, #0A1828);
+    -fx-border-color: #FF9F1C;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-width: 3;
+}
+
+.spinner-break .text-field {
+    -fx-text-fill: #FF9F1C;
+}
+
+.spinner-break .increment-arrow-button,
+.spinner-break .decrement-arrow-button {
+    -fx-background-color: #FF9F1C;
+}
+
+/* ==================== GLASS MORPHISM (FIXED) ==================== */
+.spinner-glass {
+    /* Backdrop filter dihapus karena tidak didukung JavaFX */
+    -fx-background-color: rgba(23, 133, 130, 0.2); 
+    -fx-border-color: rgba(191, 161, 129, 0.5);
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-border-width: 2;
+}
+
+/* ==================== NEON GLOW (FIXED) ==================== */
+.spinner-neon {
+    -fx-background-color: #0A1828;
+    -fx-border-color: #3DDC84;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-width: 3;
+    /* Efek neon menggunakan dropshadow tunggal yang kuat */
+    -fx-effect: dropshadow(three-pass-box, #3DDC84, 15, 0.5, 0, 0);
+}
+
+.spinner-neon .text-field {
+    -fx-text-fill: #3DDC84;
+}

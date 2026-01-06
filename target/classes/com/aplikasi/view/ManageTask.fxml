@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #021526;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.ManageTaskController">
+    <children>
+        <!-- SIDEBAR - Fixed width 280px -->
+        <VBox maxWidth="280.0" minWidth="280.0" prefWidth="280.0" spacing="0.0" style="-fx-background-color: linear-gradient(to bottom, #03346E 0%, #021526 100%); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 20, 0, 8, 0);">
+            <children>
+                <!-- Header -->
+                <VBox alignment="CENTER" maxHeight="150.0" minHeight="150.0" prefHeight="150.0" prefWidth="280.0" style="-fx-background-color: rgba(2, 21, 38, 0.7); -fx-effect: innershadow(gaussian, rgba(0,0,0,0.6), 12, 0, 0, 6);">
+                    <children>
+                        <Label style="-fx-effect: dropshadow(gaussian, rgba(226, 226, 182, 0.5), 12, 0, 0, 0);" text="Pomodo+" textFill="#E2E2B6">
+                            <font>
+                                <Font name="System Bold" size="42.0" />
+                            </font>
+                        </Label>
+                        <Label text="✨ Stay Focused, Get Things Done ✨" textAlignment="CENTER" textFill="#6EACDA" wrapText="true">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                    </children>
+                </VBox>
+                
+                <!-- Navigation Label -->
+                <Label text=" NAVIGATION" textFill="#6EACDA">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="15.0" left="22.0" top="28.0" />
+                    </VBox.margin>
+                </Label>
+                
+                <!-- Navigation Buttons -->
+                <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets left="15.0" right="15.0" />
+                    </padding>
+                    <children>
+                        <Button fx:id="btnGoToTimer" alignment="CENTER_LEFT" graphicTextGap="18.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGoToTimer" prefHeight="55.0" style="-fx-background-color: rgba(110, 172, 218, 0.1); -fx-background-radius: 12; -fx-cursor: hand; -fx-border-color: rgba(110, 172, 218, 0.3); -fx-border-width: 1.5; -fx-border-radius: 12;" text="🍅  Pomodoro Timer" textFill="#EEEEEE">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                        
+                        <Button fx:id="btnGoToManageTask" alignment="CENTER_LEFT" graphicTextGap="18.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGoToManageTask" prefHeight="55.0" style="-fx-background-color: linear-gradient(to right, rgba(110, 172, 218, 0.4) 0%, rgba(3, 52, 110, 0.4) 100%); -fx-background-radius: 12; -fx-cursor: hand; -fx-border-color: #E2E2B6; -fx-border-width: 0 0 0 5; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(110, 172, 218, 0.4), 12, 0, 0, 3);" text="📋  Task Management" textFill="#EEEEEE">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                        
+                        <Button fx:id="btnReport" alignment="CENTER_LEFT" graphicTextGap="18.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleReport" prefHeight="55.0" style="-fx-background-color: rgba(110, 172, 218, 0.1); -fx-background-radius: 12; -fx-cursor: hand; -fx-border-color: rgba(110, 172, 218, 0.2); -fx-border-width: 1.5; -fx-border-radius: 12;" text="📈  Report" textFill="#EEEEEE">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                         <Button fx:id="btnMissions" alignment="CENTER_LEFT" graphicTextGap="18.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMissions" prefHeight="55.0" style="-fx-background-color: rgba(110, 172, 218, 0.1); -fx-background-radius: 12; -fx-cursor: hand; -fx-border-color: rgba(110, 172, 218, 0.2); -fx-border-width: 1.5; -fx-border-radius: 12;" text="🎯 Mission" textFill="#EEEEEE">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </VBox>
+                
+                <!-- Back Button -->
+                <Button fx:id="btnBackToMenu" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="55.0" style="-fx-background-color: linear-gradient(135deg, #E2E2B6 0%, #CFCF9F 100%); -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 0, 4);" text="⬅  Back to Menu" textFill="#021526">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="25.0" left="15.0" right="15.0" top="20.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+        
+        <!-- MAIN CONTENT - Grows to fill remaining space -->
+        <VBox HBox.hgrow="ALWAYS">
+         <children>
+                <!-- Header Bar - Fixed height 100px -->
+                <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" style="-fx-background-color: linear-gradient(135deg, #03346E 0%, #6EACDA 100%); -fx-border-color: #E2E2B6; -fx-border-width: 0 0 3 0; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0, 0, 5);">
+                    <padding>
+                        <Insets left="40.0" right="40.0" />
+                    </padding>
+                    <children>
+                        <Label text="📋 Task Management" textFill="#E2E2B6">
+                            <font>
+                                <Font name="System Bold" size="32.0" />
+                            </font>
+                        </Label>
+                        <VBox HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnGoToAdd" mnemonicParsing="false" onAction="#handleAddTask" prefHeight="52.0" prefWidth="160.0" style="-fx-background-color: #E2E2B6; -fx-background-radius: 14; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 0, 4);" text="➕ Add Task" textFill="#021526">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+                
+                <!-- Content Area - Grows to fill remaining space -->
+                <VBox spacing="0.0" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                    </padding>
+                    <children>
+                        <!-- Search and Filter Bar -->
+                        <HBox alignment="CENTER_LEFT" spacing="18.0" style="-fx-background-color: rgba(3, 52, 110, 0.4); -fx-background-radius: 18 18 0 0; -fx-padding: 22 28 22 28; -fx-border-color: #6EACDA; -fx-border-width: 2 2 0 2; -fx-border-radius: 18 18 0 0;">
+                            <children>
+                                <Label text="🔍" textFill="#6EACDA">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txtSearch" prefHeight="42.0" prefWidth="250.0" promptText="🔎 Search your tasks..." style="-fx-background-color: #021526; -fx-text-fill: white; -fx-prompt-text-fill: #6EACDA; -fx-border-color: #6EACDA; -fx-border-radius: 14; -fx-background-radius: 14; -fx-border-width: 1.5;">
+                                </TextField>
+                                
+                                <Button fx:id="btnClearSearch" prefHeight="47.0" prefWidth="65.0" style="-fx-background-color: #6EACDA; -fx-text-fill: #021526; -fx-background-radius: 12; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 20;" text="✕">
+                                </Button>
+                                
+                                <VBox HBox.hgrow="ALWAYS" />
+                                
+                                <Label fx:id="lblTaskCount" style="-fx-background-color: #E2E2B6; -fx-background-radius: 20; -fx-padding: 8 18 8 18;" text="0 tasks" textFill="#021526">
+                                    <font>
+                                        <Font name="System Bold" size="13.0" />
+                                    </font>
+                                </Label>
+                                
+                                <ComboBox fx:id="cbFilterCategory" prefHeight="42.0" prefWidth="180.0" promptText="Filter Category" style="-fx-background-color: #03346E; -fx-border-color: #E2E2B6; -fx-border-radius: 12; -fx-background-radius: 12; -fx-border-width: 1.5; -fx-text-fill: white;" styleClass="filter-combo">
+                                </ComboBox>
+                            </children>
+                        </HBox>
+                        
+                        <!-- Tasks Table -->
+                        <TableView fx:id="tvTasks" style="-fx-background-color: rgba(2, 21, 38, 0.8); -fx-background-radius: 0 0 22 22; -fx-border-color: #6EACDA; -fx-border-radius: 0 0 22 22; -fx-border-width: 0 2 2 2;" stylesheets="@../css/Table.css" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colTitle" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;">
+                                    <graphic>
+                                        <Label style="-fx-font-weight: bold; -fx-font-size: 14;" text="📝 Task Name" textFill="#E2E2B6" />
+                                    </graphic>
+                                </TableColumn>
+                                <TableColumn fx:id="colCategory" prefWidth="145.0" style="-fx-alignment: CENTER;">
+                                    <graphic>
+                                        <Label style="-fx-font-weight: bold; -fx-font-size: 14;" text="Category" textFill="#E2E2B6" />
+                                    </graphic>
+                                </TableColumn>
+                                <TableColumn fx:id="colDeadline" prefWidth="135.0" style="-fx-alignment: CENTER;">
+                                    <graphic>
+                                        <Label style="-fx-font-weight: bold; -fx-font-size: 14;" text="📅 Deadline" textFill="#E2E2B6" />
+                                    </graphic>
+                                </TableColumn>
+                                <TableColumn fx:id="colDescription" prefWidth="230.0" style="-fx-alignment: CENTER-LEFT;">
+                                    <graphic>
+                                        <Label style="-fx-font-weight: bold; -fx-font-size: 14;" text="📄 Description" textFill="#E2E2B6" />
+                                    </graphic>
+                                </TableColumn>
+                                <TableColumn fx:id="colCompleted" prefWidth="105.0" style="-fx-alignment: CENTER;">
+                                    <graphic>
+                                        <Label style="-fx-font-weight: bold; -fx-font-size: 14;" text="✅ Done" textFill="#E2E2B6" />
+                                    </graphic>
+                                </TableColumn>
+                                <TableColumn fx:id="colEditDelete" prefWidth="158.0" style="-fx-alignment: CENTER;" text="⚙ Actions" />
+                            </columns>
+                            <placeholder>
+                                <VBox alignment="CENTER" spacing="12.0">
+                                    <children>
+                                        <Label style="-fx-font-size: 56;" text="🎯" textFill="#6EACDA" />
+                                        <Label style="-fx-font-size: 18; -fx-font-weight: bold;" text="No tasks found" textFill="#E2E2B6" />
+                                        <Label style="-fx-font-size: 14; -fx-font-style: italic;" text="Try different search or add a new task!" textFill="#6EACDA" />
+                                    </children>
+                                </VBox>
+                            </placeholder>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                        </TableView>
+                    </children>
+                </VBox>
+            </children>
+      </VBox>
+    </children>
+   <stylesheets>
+      <URL value="@../css/Table.css" />
+      <URL value="@../css/ComboBox.css" />
+   </stylesheets>
+</HBox>

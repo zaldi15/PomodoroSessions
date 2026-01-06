@@ -1,0 +1,95 @@
+/* ========================================
+   MODERN TABLE STYLING - REFINED VERSION
+   ======================================== */
+
+.table-view {
+    -fx-background-color: #021526;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: rgba(110, 172, 218, 0.3);
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
+/* Menghilangkan background putih di belakang scrollbar */
+.table-view .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ==================== HEADER ==================== */
+.table-view .column-header-background {
+    -fx-background-color: #03346E;
+    -fx-background-radius: 12 12 0 0;
+    -fx-background-insets: 0 0 1 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 45; /* Header lebih tinggi agar modern */
+    -fx-border-color: transparent rgba(110, 172, 218, 0.2) transparent transparent;
+}
+
+/* Ganti bagian ini di CSS Anda */
+.table-view .column-header .label {
+    -fx-text-fill: #6EACDA;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER; /* Ubah dari CENTER-LEFT ke CENTER */
+    -fx-text-alignment: CENTER; /* Memastikan teks multiline juga di tengah */
+}
+
+/* ==================== ROWS & CELLS ==================== */
+.table-row-cell {
+    -fx-background-color: #021526;
+    -fx-background-insets: 0, 0 0 1 0; /* Garis pemisah tipis */
+    -fx-padding: 2 0 2 0;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #02192e; /* Zebra stripe sangat tipis */
+}
+
+/* Efek Hover Modern: Menambahkan garis aksen di kiri */
+.table-row-cell:hover {
+    -fx-background-color: #03346E;
+    -fx-border-color: transparent transparent transparent #6EACDA;
+    -fx-border-width: 0 0 0 4;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #6EACDA;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #021526; /* Teks jadi gelap saat row biru terang */
+    -fx-font-weight: bold;
+}
+
+.table-cell {
+    -fx-text-fill: #E2E2B6;
+    -fx-padding: 12 15;
+    -fx-alignment: CENTER; /* Ubah dari CENTER-LEFT ke CENTER */
+    -fx-border-color: transparent;
+}
+/* ==================== BADGES (Pills) ==================== */
+.category-badge {
+    -fx-background-radius: 20;
+    -fx-padding: 4 12;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* ==================== SCROLLBAR (Minimalis) ==================== */
+.table-view .scroll-bar:vertical, .table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar .thumb {
+    -fx-background-color: rgba(110, 172, 218, 0.4);
+    -fx-background-radius: 10;
+}
+
+.table-view .scroll-bar .thumb:hover {
+    -fx-background-color: #6EACDA;
+}

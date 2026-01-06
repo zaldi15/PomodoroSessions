@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #021526;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.RegistrationController">
+   <children>
+      <VBox alignment="CENTER" layoutX="0.0" layoutY="0.0" prefHeight="768.0" prefWidth="846.0" spacing="32.0">
+         <padding>
+            <Insets bottom="80.0" left="140.0" right="140.0" top="80.0" />
+         </padding>
+         <children>
+            <VBox alignment="CENTER" spacing="12.0">
+               <children>
+                  <Label style="-fx-effect: dropshadow(gaussian, rgba(226, 226, 182, 0.5), 10, 0, 0, 0);" text="Create Account ✨" textFill="#E2E2B6">
+                     <font><Font name="System Bold" size="42.0" /></font>
+                  </Label>
+                  <Label text="Join us and boost your productivity" textFill="#6EACDA">
+                     <font><Font size="16.0" /></font>
+                  </Label>
+               </children>
+            </VBox>
+            
+            <VBox spacing="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label text="👤 Username" textFill="#E2E2B6">
+                           <font><Font name="System Bold" size="15.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtRegUsername" prefHeight="55.0" promptText="Choose a unique username" style="-fx-background-color: #03346E; -fx-text-fill: white; -fx-prompt-text-fill: rgba(110, 172, 218, 0.5); -fx-background-radius: 12; -fx-border-color: #6EACDA; -fx-border-radius: 12; -fx-border-width: 2;" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label text="📧 Email Address" textFill="#E2E2B6">
+                           <font><Font name="System Bold" size="15.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtRegEmail" prefHeight="55.0" promptText="Enter your email" style="-fx-background-color: #03346E; -fx-text-fill: white; -fx-prompt-text-fill: rgba(110, 172, 218, 0.5); -fx-background-radius: 12; -fx-border-color: #6EACDA; -fx-border-radius: 12; -fx-border-width: 2;" />
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label text="🔒 Password" textFill="#E2E2B6">
+                           <font><Font name="System Bold" size="15.0" /></font>
+                        </Label>
+                        <PasswordField fx:id="txtRegPassword" prefHeight="55.0" promptText="Create a strong password" style="-fx-background-color: #03346E; -fx-text-fill: white; -fx-prompt-text-fill: rgba(110, 172, 218, 0.5); -fx-background-radius: 12; -fx-border-color: #6EACDA; -fx-border-radius: 12; -fx-border-width: 2;" />
+                     </children>
+                  </VBox>
+                  
+                  <Button fx:id="btnRegister" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleRegister" prefHeight="60.0" style="-fx-background-color: linear-gradient(135deg, #E2E2B6 0%, #CFCF9F 100%); -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 0, 4);" text="🎉 Create Account" textFill="#021526">
+                     <font><Font name="System Bold" size="18.0" /></font>
+                     <VBox.margin><Insets top="10.0" /></VBox.margin>
+                  </Button>
+                  
+                  <HBox alignment="CENTER" spacing="8.0">
+                     <children>
+                        <Label text="Already have an account?" textFill="#6EACDA" />
+                        <Button onAction="#handleGotoLogin" style="-fx-background-color: transparent; -fx-text-fill: #E2E2B6; -fx-underline: true; -fx-cursor: hand;" text="Login here">
+                           <font><Font name="System Bold" size="15.0" /></font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      
+      <AnchorPane layoutX="846.0" prefHeight="768.0" prefWidth="520.0" style="-fx-background-color: linear-gradient(to bottom, #03346E 0%, #021526 100%); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 25, 0, -10, 0);">
+         <children>
+            <VBox alignment="CENTER" layoutX="60.0" layoutY="200.0" prefWidth="400.0" spacing="30.0">
+               <children>
+                  <Label style="-fx-effect: dropshadow(gaussian, rgba(226, 226, 182, 0.4), 10, 0, 0, 0);" text="Join Pomodo+" textFill="#E2E2B6">
+                     <font><Font name="System Bold" size="46.0" /></font>
+                  </Label>
+                  <Label text="Start your journey to better productivity and focused work" textAlignment="CENTER" textFill="#EEEEEE" wrapText="true">
+                     <font><Font size="18.0" /></font>
+                  </Label>
+                  <VBox spacing="15.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <Label text="✅" textFill="#E2E2B6" />
+                           <Label text="Pomodoro Timer for focus" textFill="white" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <Label text="✅" textFill="#E2E2B6" />
+                           <Label text="Smart Task Management" textFill="white" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <Label text="✅" textFill="#E2E2B6" />
+                           <Label text="Track your progress" textFill="white" />
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>

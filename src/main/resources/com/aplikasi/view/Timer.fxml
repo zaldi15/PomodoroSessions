@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #021526;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.aplikasi.view.TimerController">
+    <children>
+        <!-- SIDEBAR - Fixed width 280px -->
+        <VBox maxWidth="280.0" minWidth="280.0" prefWidth="280.0" spacing="0.0" style="-fx-background-color: linear-gradient(to bottom, #03346E 0%, #021526 100%); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 20, 0, 8, 0);">
+            <children>
+                <!-- Header -->
+                <VBox alignment="CENTER" maxHeight="150.0" minHeight="150.0" prefHeight="150.0" prefWidth="280.0" style="-fx-background-color: rgba(2, 21, 38, 0.7); -fx-effect: innershadow(gaussian, rgba(0,0,0,0.6), 12, 0, 0, 6);">
+                    <children>
+                        <Label style="-fx-effect: dropshadow(gaussian, rgba(226, 226, 182, 0.5), 12, 0, 0, 0);" text="Pomodo+" textFill="#E2E2B6">
+                            <font>
+                                <Font name="System Bold" size="42.0" />
+                            </font>
+                        </Label>
+                        <Label text="✨ Stay Focused, Get Things Done ✨" textAlignment="CENTER" textFill="#6EACDA" wrapText="true">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                    </children>
+                </VBox>
+                
+                <!-- Navigation Label -->
+                <Label text=" NAVIGATION" textFill="#6EACDA">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="15.0" left="22.0" top="28.0" />
+                    </VBox.margin>
+                </Label>
+                
+                <!-- Navigation Buttons -->
+                <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets left="15.0" right="15.0" />
+                    </padding>
+                    <children>
+                        <Button fx:id="btnTimer" alignment="CENTER_LEFT" graphicTextGap="18.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleTimer" prefHeight="55.0" style="-fx-background-color: linear-gradient(to right, rgba(110, 172, 218, 0.4) 0%, rgba(3, 52, 110, 0.4) 100%); -fx-background-radius: 12; -fx-cursor: hand; -fx-border-color: #E2E2B6; -fx-border-width: 0 0 0 5; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(110, 172, 218, 0.4), 12, 0, 0, 3);" text="🍅  Pomodoro Timer" textFill="#EEEEEE">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                        
+                        <Button fx:id="btnGoToManageTask" alignment="CENTER_LEFT" graphicTextGap="18.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGoToManageTask" prefHeight="55.0" style="-fx-background-color: rgba(110, 172, 218, 0.1); -fx-background-radius: 12; -fx-cursor: hand; -fx-border-color: rgba(110, 172, 218, 0.2); -fx-border-width: 1.5; -fx-border-radius: 12;" text="📋  Task Management" textFill="#EEEEEE">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                        
+                        <Button fx:id="btnReport" alignment="CENTER_LEFT" graphicTextGap="18.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleReport" prefHeight="55.0" style="-fx-background-color: rgba(110, 172, 218, 0.1); -fx-background-radius: 12; -fx-cursor: hand; -fx-border-color: rgba(110, 172, 218, 0.2); -fx-border-width: 1.5; -fx-border-radius: 12;" text="📈  Report" textFill="#EEEEEE">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                        <Button fx:id="btnMissions" alignment="CENTER_LEFT" graphicTextGap="18.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMissions" prefHeight="55.0" style="-fx-background-color: rgba(110, 172, 218, 0.1); -fx-background-radius: 12; -fx-cursor: hand; -fx-border-color: rgba(110, 172, 218, 0.2); -fx-border-width: 1.5; -fx-border-radius: 12;" text="🎯  Mission" textFill="#EEEEEE">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </VBox>
+                
+                <!-- Back Button -->
+                <Button fx:id="btnBackToMenu" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="55.0" style="-fx-background-color: linear-gradient(135deg, #E2E2B6 0%, #CFCF9F 100%); -fx-background-radius: 12; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 0, 4);" text="⬅  Back to Menu" textFill="#021526">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="25.0" left="15.0" right="15.0" top="20.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+        
+        <!-- MAIN CONTENT - Grows to fill remaining space -->
+        <VBox HBox.hgrow="ALWAYS">
+            <children>
+                <!-- Header Bar - Fixed height 100px -->
+                <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" style="-fx-background-color: linear-gradient(135deg, #03346E 0%, #6EACDA 100%); -fx-border-color: #E2E2B6; -fx-border-width: 0 0 3 0; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0, 0, 5);">
+                    <padding>
+                        <Insets left="40.0" right="40.0" />
+                    </padding>
+                    <children>
+                        <Label text="🍅 Pomodoro Timer" textFill="#E2E2B6">
+                            <font>
+                                <Font name="System Bold" size="32.0" />
+                            </font>
+                        </Label>
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <Label fx:id="labelTask" style="-fx-background-color: rgba(2, 21, 38, 0.4); -fx-padding: 8 20 8 20; -fx-background-radius: 20; -fx-border-color: #E2E2B6; -fx-border-radius: 20;" text="Working On: -" textFill="#E2E2B6">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                
+                <!-- Content Area - Grows to fill remaining space -->
+                <VBox alignment="TOP_CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+                    </padding>
+                    <children>
+                        <!-- Timer Display -->
+                        <VBox alignment="CENTER" maxHeight="206.0" minHeight="180.0" prefHeight="206.0" prefWidth="867.0" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom, rgba(3, 52, 110, 0.6), rgba(2, 21, 38, 0.8)); -fx-background-radius: 25; -fx-border-color: #6EACDA; -fx-border-radius: 25; -fx-border-width: 2.5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 25, 0, 0, 10);">
+                            <padding>
+                                <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+                            </padding>
+                            <children>
+                                <Label fx:id="labelTimer" style="-fx-effect: dropshadow(gaussian, rgba(226, 226, 182, 0.3), 15, 0, 0, 0);" text="25:00" textFill="#E2E2B6">
+                                    <font>
+                                        <Font name="System Bold" size="72.0" />
+                                    </font>
+                                </Label>
+                                
+                                <!-- Control Buttons -->
+                                <HBox alignment="CENTER" prefHeight="102.0" prefWidth="921.0" spacing="20.0">
+                                    <children>
+                                        <Button fx:id="btnStart" mnemonicParsing="false" onAction="#handleStart" prefHeight="50.0" prefWidth="120.0" style="-fx-background-color: linear-gradient(to bottom, #6EACDA, #03346E); -fx-background-radius: 15; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(110, 172, 218, 0.5), 10, 0, 0, 3);" text="▶  Start" textFill="WHITE">
+                                            <font>
+                                                <Font name="System Bold" size="16.0" />
+                                            </font>
+                                        </Button>
+                                        <Button fx:id="btnPause" mnemonicParsing="false" onAction="#handlePause" prefHeight="50.0" prefWidth="130.0" style="-fx-background-color: #E2E2B6; -fx-background-radius: 15; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);" text="⏸  Pause" textFill="#021526">
+                                            <font>
+                                                <Font name="System Bold" size="16.0" />
+                                            </font>
+                                        </Button>
+                                        <Button fx:id="btnReset" mnemonicParsing="false" onAction="#handleReset" prefHeight="50.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-background-radius: 15; -fx-cursor: hand; -fx-border-color: #6EACDA; -fx-border-radius: 15; -fx-border-width: 2.5;" text="↻  Reset" textFill="#6EACDA">
+                                            <font>
+                                                <Font name="System Bold" size="16.0" />
+                                            </font>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        
+                        <!-- Duration Settings -->
+                        <HBox alignment="CENTER" spacing="30.0">
+                            <children>
+                                <VBox alignment="CENTER" maxHeight="130.0" minHeight="130.0" prefHeight="130.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: linear-gradient(135deg, rgba(61, 220, 132, 0.2) 0%, rgba(10, 24, 40, 0.8) 100%); -fx-background-radius: 20; -fx-border-color: #3DDC84; -fx-border-radius: 20; -fx-border-width: 3; -fx-effect: dropshadow(gaussian, rgba(61, 220, 132, 0.3), 12, 0, 0, 4);">
+                                    <padding>
+                                        <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                                    </padding>
+                                    <children>
+                                        <HBox alignment="CENTER" spacing="8.0">
+                                            <children>
+                                                <Label style="-fx-font-size: 20;" text="⏱" textFill="#3DDC84" />
+                                                <Label text="Focus Duration" textFill="#EEEEEE">
+                                                    <font>
+                                                        <Font name="System Bold" size="14.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+                                        <Spinner fx:id="spinnerMinutes" prefHeight="45.0" prefWidth="150.0" styleClass="spinner-focus" />
+                                    </children>
+                                </VBox>
+                                
+                                <VBox alignment="CENTER" maxHeight="130.0" minHeight="130.0" prefHeight="130.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: linear-gradient(135deg, rgba(255, 159, 28, 0.2) 0%, rgba(10, 24, 40, 0.8) 100%); -fx-background-radius: 20; -fx-border-color: #FF9F1C; -fx-border-radius: 20; -fx-border-width: 3; -fx-effect: dropshadow(gaussian, rgba(255, 159, 28, 0.3), 12, 0, 0, 4);">
+                                    <padding>
+                                        <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                                    </padding>
+                                    <children>
+                                        <HBox alignment="CENTER" spacing="8.0">
+                                            <children>
+                                                <Label style="-fx-font-size: 20;" text="☕" textFill="#FF9F1C" />
+                                                <Label text="Break Duration" textFill="#EEEEEE">
+                                                    <font>
+                                                        <Font name="System Bold" size="14.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+                                        <Spinner fx:id="spinnerBreak" prefHeight="45.0" prefWidth="150.0" styleClass="spinner-break" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- Task List -->
+                      <VBox spacing="15.0" styleClass="task-container" stylesheets="@pending-tasks-style.css" VBox.vgrow="ALWAYS">
+                              <children>
+                                  <!-- Header Label -->
+                                  <Label styleClass="task-header" text="📋 Pending Tasks">
+                                      <font>
+                                          <Font name="System Bold" size="20.0" />
+                                      </font>
+                                  </Label>
+
+                                  <!-- ListView with Modern Style -->
+                                  <ListView fx:id="taskListView" styleClass="modern-task-list" VBox.vgrow="ALWAYS">
+                                      <!-- You can also try: glass-task-list or neon-task-list -->
+                                  </ListView>
+                              </children>
+                       </VBox>
+
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+   <stylesheets>
+      <URL value="@../css/Spinner.css" />
+      <URL value="@../css/pending%20Tasks.css" />
+   </stylesheets>
+</HBox>

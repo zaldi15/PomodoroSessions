@@ -1,0 +1,89 @@
+/* ============================================
+   PENDING TASKS - FINAL SAFE VERSION
+   ============================================ */
+
+/* Container Utama */
+.task-container {
+    -fx-spacing: 20;
+    -fx-padding: 25;
+    -fx-background-color: #021526; 
+}
+
+/* Header - Modern & Minimalist */
+.task-header {
+    /* Menggunakan linear gradient format standar JavaFX */
+    -fx-text-fill: linear-gradient(to right, #6EACDA, #E2E2B6);
+    -fx-font-family: "System"; /* Gunakan System jika Inter belum di-import */
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+/* ListView Container */
+.modern-task-list {
+    /* Menggunakan HEX dengan Alpha untuk mengganti RGBA */
+    -fx-background-color: #FFFFFF08; 
+    -fx-background-radius: 25;
+    -fx-border-color: linear-gradient(to bottom right, #6EACDA80, #FFFFFF1A);
+    -fx-border-radius: 25;
+    -fx-border-width: 1.2;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, #00000066, 20, 0, 0, 10);
+}
+
+/* Hilangkan elemen bawaan ListView */
+.modern-task-list .list-view,
+.modern-task-list .virtual-flow {
+    -fx-background-color: transparent;
+}
+
+/* Styling Baris Task */
+.modern-task-list .list-cell {
+    -fx-background-color: #03346E33; /* Pengganti rgba(3, 52, 110, 0.2) */
+    -fx-background-insets: 0 0 12 0; 
+    -fx-background-radius: 18;
+    -fx-text-fill: #E2E2B6;
+    -fx-padding: 15 20;
+    -fx-font-size: 14px;
+    -fx-border-color: #6EACDA1A;
+    -fx-border-radius: 18;
+    -fx-border-width: 0.5;
+}
+
+/* Hover Effect */
+.modern-task-list .list-cell:hover {
+    -fx-background-color: #6EACDA26;
+    -fx-border-color: #6EACDA99;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Selected Effect */
+.modern-task-list .list-cell:selected {
+    -fx-background-color: linear-gradient(to right, #03346E, #6EACDA);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    /* Dropshadow tanpa RGBA agar aman */
+    -fx-effect: dropshadow(gaussian, #6EACDA66, 10, 0, 0, 0);
+}
+
+/* Scrollbar Minimalis */
+.modern-task-list .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 5;
+}
+
+.modern-task-list .scroll-bar .thumb {
+    -fx-background-color: #6EACDA33;
+    -fx-background-radius: 20;
+}
+
+.modern-task-list .scroll-bar .thumb:hover {
+    -fx-background-color: #6EACDA;
+}
+
+/* Placeholder */
+.modern-task-list .placeholder .label {
+    -fx-text-fill: #6EACDA80;
+    -fx-font-style: italic;
+    -fx-font-size: 15px;
+}
